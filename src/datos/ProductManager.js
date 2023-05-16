@@ -3,10 +3,8 @@ import fs from 'fs';
 export class ProductManager{
     
     constructor() {
-        this.path = 'products.json';
+        this.path = './src/productos.json';
     }
-    
-    static idGlobal = 0
 
     async getJSON() {
         let products;
@@ -29,90 +27,81 @@ export class ProductManager{
             products = await this.getJSON()
         } catch (error) {
             console.log(error)
+            throw error
         }
         return products
-    }
-    
-    async addProduct(title, description, price, thumbnail, code, stock) {
-        let msg;
-        try {
-            let codProd = code
-            let products = await this.getJSON()
-            ProductManager.idGlobal++;
-
-            let product = {
-                id: ProductManager.idGlobal,
-                title: title,
-                description: description,
-                price: price,
-                thumbnail: thumbnail,
-                code: code,
-                stock: stock
-            }
-
-            if (products.find(({ code }) => code === codProd)) {
-                msg = { msg: "El código ya existe" }
-            } else {
-                if(!title || !description || !price || !thumbnail || !code || !stock) {
-                    msg = { msg: "Hay campos sin completar!!!" }
-                } else {
-                    products.push(product)
-                    await fs.promises.writeFile(this.path, JSON.stringify(products))
-                    msg = { msg: "El producto fue agregado" }
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
-        return msg
     }
 
     async getProductById(ids) {
         let product;
         try {
             let products = await this.getJSON()
-            let findProduct = products.find(({ id }) => id == ids); 
-            product = findProduct ? findProduct : { msg: "Product Not Found" };
+            product = products.find(({ id }) => id == ids); 
         } catch (error) {
             console.log(error)
+            throw error
         }
         return product;
     }
 
-    async updateProduct(id, product) {
-        let msg = { msg: "Producto no encontrado" }
+    async addProduct(producto) {
+        let msg;
+        let id = Date.now();
         try {
             let products = await this.getJSON()
-            let indice = products.findIndex(prod => prod.id === id)
-            if (indice !== -1) {
-                if(!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
-                    msg = { msg: "Hay campos sin completar, no se pudo actualizar!!!" }
-                } else {
-                products[indice] = product;
-                await fs.promises.writeFile(this.path, JSON.stringify(products))
-                msg = { msg: "Producto actualizado" }
-                }
-            }        
+            producto.id = id;
+            producto.status = true;             
+            products.push(producto)
+            await fs.promises.writeFile(this.path, JSON.stringify(products))
+            msg = { msg: 'El producto fue agregado' }
         } catch (error) {
             console.log(error)
+            throw error
         }
-        return msg;
+        return msg
+    }
+
+    async updateProduct(pid, fields) {
+        let product;
+        try {
+            let products = await this.getJSON()
+            let indice = products.findIndex(prod => prod.id == pid)
+            if (indice == -1) {
+                return product;
+            }
+            fields.title ? products[indice].title = fields.title : "";
+            fields.description ? products[indice].description = fields.description : "";
+            fields.code ? products[indice].code = fields.code : "";
+            fields.price ? products[indice].price = fields.price : "";
+            fields.status ? products[indice].status = fields.status : "";
+            fields.stock ? products[indice].stock = fields.stock : "";
+            fields.category ? products[indice].category = fields.category : "";
+            
+            product = products[indice]
+            await fs.promises.writeFile(this.path, JSON.stringify(products))
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+        return product;
     }
 
     async deleteProduct(id) {
-        let msg = "Producto no encontrado"
+        let product
         try {
             let products = await this.getJSON()
-            let indice = products.findIndex(prod => prod.id === id)
+            let indice = products.findIndex(prod => prod.id == id)
             if (indice !== -1) {
                 products.splice(indice, 1);
                 await fs.promises.writeFile(this.path, JSON.stringify(products))
-                msg = "Producto eliminado"
+                product = await this.getJSON()
+                return product
             }
         } catch (error) {
             console.log(error)
+            throw error
         }
-        return msg;
+        return product;
     }
 
 }
