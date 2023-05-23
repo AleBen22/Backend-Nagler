@@ -1,0 +1,52 @@
+<div>
+    <h3>Producto Nuevo</h3>
+        <label>Nombre</label>
+        <br>
+        <input type="text" id="title" class="textbox"/>
+        <br>
+        <label>Descripcion</label>
+        <br>
+        <input type="text" id="description" class="textbox"/>
+        <br>
+        <label>Codigo</label>
+        <br>
+        <input type="text" id="code" class="textbox"/>
+        <br>
+        <label>Precio</label>
+        <br>
+        <input type="number" id="price" class="textbox"/>
+        <br>
+        <label>Stock</label>
+        <br>
+        <input type="number" id="stock" class="textbox"/>
+        <br>
+        <label>Categoria</label>
+        <br>
+        <input type="text" id="category" class="textbox"/>
+        <br>
+        <button id="agree" class="button">Agregar</button>
+</div>
+<div>
+    <h3>Eliminar Producto</h3>
+        <label>Id</label>
+        <br>
+        <input type="text" id="productid" class="textbox"/>
+        <br>
+        <button id="delete" class="button">Agregar</button>
+</div>
+<div>
+    <h1>Listado de Productos</h1>
+    <p></p>
+    {{#each products}}
+        <ul>
+            <li>{{id}}</li>
+            <li>{{status}}</li>
+            <li>{{title}}</li>
+            <li>{{description}}</li>
+            <li>{{code}}</li>
+            <li>{{price}}</li>
+            <li>{{stock}}</li>
+            <li>{{category}}</li>
+        </ul>
+    {{/each}}
+</div>
