@@ -1,46 +1,59 @@
 import {Router} from 'express';
-import { CartManager } from '../datos/CartManager.js';
-import { ProductManager } from '../datos/ProductManager.js';
+//import { CartManager } from '../DAO/datos/CartManager.js';
+//import { ProductManager } from '../DAO/datos/ProductManager.js';
+import ProdManager from '../DAO/ProductDAO.js';
+import CartsManager from '../DAO/CartDAO.js';
 const cartRouter = Router();
 
-const manager = new CartManager();
-const prodmanager = new ProductManager();
+const manager = new CartsManager();
+const prodmanager = new ProdManager();
 
 cartRouter.get('/', async (req, res) => {
-    let carts = await manager.getCarts()
-    res.send(carts)
+    let carts
+    try {
+        carts = await manager.getCarts()
+    } catch (error) {
+        res.status(400).send({status: "error", error})
+    }
+    res.send({ status: "success", payload: carts })
 })
 
 cartRouter.get('/:cid', async (req, res) => {
     let id = req.params.cid;
-    let cart = await manager.getCartById(id)
-    if (!cart) {
+    let cart
+    try {
+        cart = await manager.getCartById(id)
+    } catch (error) {
         res.status(400).send({ status: 'error', msg: `El id ${id} no corresponde a un carrito` });
     }
-        res.send(cart)
+    res.send({ status: "success", payload: cart })
 })
 
 cartRouter.post('/', async (req, res) => {
-    let cart = await manager.createCart();
-    if (!cart) {
+    let cart
+    try {
+        cart = await manager.createCart();
+    } catch (error) {
         res.status(400).send({ status: 'error', msg: `Hubo un error al generar el carrito` });
     }
-        res.send({ status: "success", msg: `Cart created` })    
+    res.send({ status: "success", payload: cart })    
 })
 
 cartRouter.put('/:cid/product/:pid', async (req, res) => {
     let cid = req.params.cid
     let pid = req.params.pid;
-    let product = await prodmanager.getProductById(pid)
-    if (!product) {
+    let addToCart
+    try {
+        await prodmanager.getProductById(pid)
+    } catch (error) {
         res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
-    } else {   
-    let addToCart = await manager.addProductToCart(cid, pid)
-    if(!addToCart){
-        res.status(400).send({ status: 'error', msg: 'Cart not found'})
     }
-        res.send({ status: 'success', msg: 'Cart updated'})
+    try {
+        addToCart = await manager.addProductToCart(cid, pid)
+    } catch (error) {
+        res.status(400).send({ status: 'error', msg: error})
     }
+        res.send({ status: 'success', payload: addToCart})
 })
 
 export default cartRouter;

@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import productRouter from './routes/product.js';
 import cartRouter from './routes/cart.js';
 import viewsRouter from './routes/views.js'
@@ -8,11 +9,15 @@ import realtimeproductRouter from './routes/realtimeproducts.js';
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 
-import { ProductManager } from './datos/ProductManager.js';
+import { ProductManager } from './DAO/datos/ProductManager.js';
 
 const prodmanager = new ProductManager();
 
 const app = express();
+
+mongoose.connect('mongodb+srv://trabajoAdmin:$coder1234@ecommerce.7vvk0h4.mongodb.net/ecommerce?retryWrites=true&w=majority')
+    .then(() => console.log('Database connected'))
+    .catch(error => console.log(error))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
