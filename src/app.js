@@ -9,9 +9,9 @@ import realtimeproductRouter from './routes/realtimeproducts.js';
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 
-import { ProductManager } from './DAO/datos/ProductManager.js';
+import ProdManager from './DAO/ProductDAO.js';
 
-const prodmanager = new ProductManager();
+const prodmanager = new ProdManager();
 
 const app = express();
 

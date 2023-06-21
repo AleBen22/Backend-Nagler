@@ -35,6 +35,7 @@ class CartsManager {
         let cart;
         try {
             cart = await cartModel.findOne({ _id: ids })
+            console.log(cart)
         } catch (error) {
             throw error
             console.log(error)
@@ -42,7 +43,7 @@ class CartsManager {
         return cart;
     }
 
-    async addProductToCart(cid, pid) {
+    async addProductToCart(cid, pid, quantity) {
         let cart;
         let result;
         try {
@@ -52,11 +53,49 @@ class CartsManager {
             console.log(error)
         }
         try {
-            let prodCart = await cartModel.findOne({ _id: cid, "products.id": pid})
+            let prodCart = await cartModel.findOne({ _id: cid, "products.id": pid},{"products.quantity": true})
             if (!prodCart){
-                result = await cartModel.updateOne({ _id: cid }, { $push: [{"products.id": pid, "products.quantity": 1}]})
+                result = await cartModel.findOneAndUpdate({ _id: cid }, { $push: { products: { $each: [{id: pid, quantity: quantity }]} } })
+            } else {
+            // let prodQuantity = prodCart.products
+            // let newQuantity = prodQuantity[0].quantity + 1
+            result = await cartModel.updateOne({ _id: cid, "products.id": pid}, { $set: {"products.$.quantity": quantity}} )
             }
-            result = await cartModel.updateOne({ _id: cid, "products.id": pid}, { $set: {"products.quantity": 2}} )
+        } catch (error) {
+            throw error
+            console.log(error)
+        }
+        return result;
+    }
+
+    async deleteCart(cid) {
+        let result;
+        try {
+            result = await cartModel.findOneAndUpdate({ _id: cid }, { $pull: { products:  { quantity: {$gte: 0} }} } )
+        } catch (error) {
+            throw error
+            console.log(error)
+        }
+        return result
+    }
+
+    async deleteProductFromCart(cid, pid) {
+        let cart;
+        let result;
+        try {
+            cart = this.getCartById(cid)
+        } catch (error) {
+            throw error
+            console.log(error)
+        }
+        try {
+            let prodCart = await cartModel.findOne({ _id: cid, "products.id": pid},{"products.id": true})
+            if (!prodCart){
+                result = { status: 'error', msg: `El product id ${pid} no se encuentra en el carrito` }
+            } else {
+                result = await cartModel.findOneAndUpdate({ _id: cid }, { $pull: { products:  { id: pid }} } )
+                result = { status: 'success', payload: result }
+            }
         } catch (error) {
             throw error
             console.log(error)

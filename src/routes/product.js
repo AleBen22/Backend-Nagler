@@ -9,20 +9,50 @@ const manager = new ProdManager();
 
 productRouter.get('/', async (req, res) => {
     let products
+    let page = req.params.page || 1;
+    let limit = req.params.limit || 10;
+    //let sort = req.params.sort;
+    let filter = req.query.filter;
+
     try {
-        products = await manager.getAllProducts()
+        products = await manager.getAllProducts(page, limit)
     } catch (error) {
         res.status(400).send({status: "error", error})
     }
-    // let limit = req.query.limit
-    // let limitfilter
-    // if (limit > products.length) {
-    //     limitfilter = products
-    // } else {
-    //     limitfilter = products.filter((filt) => filt.id <= limit)
-    // }
-//    res.send(limit ? limitfilter : products)
-    res.send({ status: "success", payload: products })
+    let data = {
+        payload: products.docs,
+        totalPages: products.totalPages,
+        hasPrevPage: products.hasPrevPage,
+        prevPage: products.prevPage,
+        hasNextPage: products.hasNextPage,
+        nextPage: products.nextPage,
+        prevLink: products.hasPrevPage?`http://localhost:8080/products/page/${products.prevPage}/limit/${limit}`:'',
+        nextLink: products.hasNextPage?`http://localhost:8080/products/page/${products.nextPage}/limit/${limit}`:'',
+    }
+    res.send(data)
+})
+
+productRouter.get('/page/:page/limit/:limit', async (req, res) => {
+    let products
+    let page = req.params.page || 1;
+    let limit = req.params.limit || 10;
+    //let sort = req.params.sort;
+    let filter = req.query.filter;
+
+    try {
+        products = await manager.getAllProducts(page, limit)
+    } catch (error) {
+        res.status(400).send({status: "error", error})
+    }
+    let data = {
+        payload: products.docs,
+        totalPages: products.totalPages,
+        hasPrevPage: products.hasPrevPage,
+        prevPage: products.prevPage,
+        hasNextPage: products.hasNextPage,
+        nextPage: products.nextPage
+    }
+    res.send(data)
 })
 
 productRouter.get('/:pid', async (req, res) => {
@@ -33,7 +63,7 @@ productRouter.get('/:pid', async (req, res) => {
     } catch (error) {
         res.status(400).send({ status: 'error', msg: `El id ${id} no corresponde a un producto` });
     }
-        res.send({ status: "success", payload: product }) 
+        res.send({ status: "success", product }) 
 })
 
 productRouter.post('/', async (req, res) => {

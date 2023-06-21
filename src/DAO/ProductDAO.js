@@ -1,3 +1,4 @@
+import { json } from "express";
 import { productModel } from "./models/product.model.js";
 
 class ProdManager {
@@ -5,10 +6,10 @@ class ProdManager {
         this.model = productModel;
     }
 
-async getAllProducts(){
+async getAllProducts(page, limit){
     let productos;
     try {
-        productos = await this.model.find()
+        productos = await this.model.paginate({}, { page, limit: limit, lean:true })
     } catch (error) {
         throw error
         console.log(error)

@@ -12,6 +12,7 @@ document.getElementById('agree').addEventListener('click', () => {
         description: description.value,
         code: code.value,
         price: price.value,
+        status: true,
         stock: stock.value,
         category: category.value
     }

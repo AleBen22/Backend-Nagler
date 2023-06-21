@@ -37,9 +37,9 @@
 <div>
     <h1>Listado de Productos</h1>
     <p></p>
-    {{#each products}}
+    {{#each data.payload}}
         <ul>
-            <li>{{id}}</li>
+            <li>{{_id}}</li>
             <li>{{status}}</li>
             <li>{{title}}</li>
             <li>{{description}}</li>
