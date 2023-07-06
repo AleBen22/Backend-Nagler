@@ -26,13 +26,13 @@ productRouter.get('/', async (req, res) => {
         prevPage: products.prevPage,
         hasNextPage: products.hasNextPage,
         nextPage: products.nextPage,
-        prevLink: products.hasPrevPage?`http://localhost:8080/products/page/${products.prevPage}/limit/${limit}`:'',
-        nextLink: products.hasNextPage?`http://localhost:8080/products/page/${products.nextPage}/limit/${limit}`:'',
+        prevLink: products.hasPrevPage?`http://localhost:8080/realtimeproducts/limit/${limit}/page/${products.prevPage}`:'',
+        nextLink: products.hasNextPage?`http://localhost:8080/realtimeproducts/limit/${limit}/page/${products.nextPage}`:'',
     }
     res.send(data)
 })
 
-productRouter.get('/page/:page/limit/:limit', async (req, res) => {
+productRouter.get('/limit/:limit?/page/:page?', async (req, res) => {
     let products
     let page = req.params.page || 1;
     let limit = req.params.limit || 10;
@@ -50,7 +50,9 @@ productRouter.get('/page/:page/limit/:limit', async (req, res) => {
         hasPrevPage: products.hasPrevPage,
         prevPage: products.prevPage,
         hasNextPage: products.hasNextPage,
-        nextPage: products.nextPage
+        nextPage: products.nextPage,
+        prevLink: products.hasPrevPage?`http://localhost:8080/realtimeproducts/limit/${limit}/page/${products.prevPage}`:'',
+        nextLink: products.hasNextPage?`http://localhost:8080/realtimeproducts/limit/${limit}/page/${products.nextPage}`:'',
     }
     res.send(data)
 })

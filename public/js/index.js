@@ -25,5 +25,6 @@ document.getElementById('delete').addEventListener('click', () => {
 })
 
 socket.on('respond', data => {
+    
     document.querySelector('p').innerText = data;
 })
