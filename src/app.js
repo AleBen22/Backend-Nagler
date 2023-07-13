@@ -4,11 +4,12 @@ import MongoStore from 'connect-mongo';
 import mongoose from 'mongoose';
 // import productRouter from './routes/product.js';
 // import cartRouter from './routes/cart.js';
-// import viewsRouter from './routes/views.js';
+import viewsRouter from './routes/views.js';
 import sessionRouter from './routes/session.js'
-
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
 
 import ProdManager from './DAO/ProductDAO.js';
 
@@ -24,6 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'))
 
+app.engine('.hbs', handlebars.engine( { extname: '.hbs', defaultLayout: 'main.hbs'}));
+app.set('view engine', '.hbs')
+app.set('views', './views');
+
 app.use(session({
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://trabajoAdmin:$coder1234@ecommerce.7vvk0h4.mongodb.net/session?retryWrites=true&w=majority',
@@ -34,14 +39,14 @@ app.use(session({
     saveUninitialized: false,
     resave: false
 }))
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/api/session', sessionRouter)
 // app.use('/api/products', productRouter)
 // app.use('/api/carts', cartRouter)
-// app.use('/api/products', viewsRouter)
-
-app.engine('.hbs', handlebars.engine( { extname: '.hbs', defaultLayout: 'main.hbs'}));
-app.set('view engine', '.hbs')
-app.set('views', './views');
+app.use('/', viewsRouter)
 
 const PORT = 8080
 const httpServer = app.listen(PORT, () => console.log(`Server is running on port: ${httpServer.address().port}`))

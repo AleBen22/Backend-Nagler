@@ -23,10 +23,30 @@ export const getByEmail = async email => {
     return result
 }
 
+export const getById = async id => {
+    let result;
+    try {
+        result = await userModel.findOne( {_id: id} )
+    } catch (error) {
+        console.log(error)
+    }
+    return result
+}
+
 export const createUser = async user => {
     let result;
     try {
         result = await userModel.create(user)
+    } catch (error) {
+        console.log(error)
+    }
+    return result
+}
+
+export const updateUserPassword = async (email, newPassword) => {
+    let result;
+    try {
+        result = await userModel.updateOne({email: email}, {$set: {password: newPassword}})
     } catch (error) {
         console.log(error)
     }
