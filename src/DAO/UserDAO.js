@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { userModel } from "./models/user.model.js";
 
-// mongoose.connect('mongodb+srv://trabajoAdmin:$coder1234@ecommerce.7vvk0h4.mongodb.net/session?retryWrites=true&w=majority')
-
 export const getAll = async () => {
     let result;
     try {

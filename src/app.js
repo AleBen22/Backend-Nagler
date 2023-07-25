@@ -5,11 +5,13 @@ import mongoose from 'mongoose';
 // import productRouter from './routes/product.js';
 // import cartRouter from './routes/cart.js';
 import viewsRouter from './routes/views.js';
-import sessionRouter from './routes/session.js'
+import sessionRouter from './routes/auth.js'
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
+import config from './config/config.js';
+import cookieParser from 'cookie-parser';
 
 import ProdManager from './DAO/ProductDAO.js';
 
@@ -17,10 +19,14 @@ const prodmanager = new ProdManager();
 
 const app = express();
 
-mongoose.connect('mongodb+srv://trabajoAdmin:$coder1234@ecommerce.7vvk0h4.mongodb.net/ecommerce?retryWrites=true&w=majority')
+const MONGO_CONNECTION_STRING = config.MONGO_CONNECTION_STRING
+
+mongoose.connect(MONGO_CONNECTION_STRING)
+// mongoose.connect('mongodb+srv://trabajoAdmin:$coder1234@ecommerce.7vvk0h4.mongodb.net/ecommerce?retryWrites=true&w=majority')
     .then(() => console.log('Database connected'))
     .catch(error => console.log(error))
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'))
@@ -48,7 +54,7 @@ app.use('/api/session', sessionRouter)
 // app.use('/api/carts', cartRouter)
 app.use('/', viewsRouter)
 
-const PORT = 8080
+const PORT = config.PORT;
 const httpServer = app.listen(PORT, () => console.log(`Server is running on port: ${httpServer.address().port}`))
 httpServer.on('error', error => console.log(error))
 
