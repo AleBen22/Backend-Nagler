@@ -3,7 +3,7 @@ import jwt from "passport-jwt";
 import local from "passport-local";
 import GitHubStrategy from 'passport-github2';
 import config from "./config.js";
-import { createUser, getAll, getByEmail, updateUserPassword, getById } from '../DAO/UserDAO.js';
+import { createUser, getAll, getByEmail, updateUserPassword, getById } from '../dao/UserDAO.js';
 import { createHash, isValidPassword } from "../utils/index.js";
 
 const LocalStrategy = local.Strategy;
@@ -30,7 +30,6 @@ const initializePassport = () => {
         scope: ['user:email']
     }, async (accessToken, refreshToken, profile, done) => {
         try {
-            console.log(profile);
             let userEmail = profile.emails[0].value;
             let user = await getByEmail(userEmail);
             if(!user){
