@@ -1,3 +1,4 @@
+import ContactDTO from "../DAOs/DTOs/contact.dto.js";
 import {
     getByEmailService,
     createUserService,
@@ -6,12 +7,12 @@ import {
 import {
     getAllProductsService,
 } from '../services/product.js';
+import {
+    createCartService
+}   from '../services/cart.js'
+
 import { generateToken, authToken } from "../utils/jwt.js";
 import { createHash, isValidPassword } from "../utils/index.js";
-
-export const getUserController =  (req, res) => {
-    res.render('register', {})
-}
 
 export const githubLoginController = async (req, res) => {}
 
@@ -20,16 +21,22 @@ export const githubcallbackLoginController = async (req, res) => {
     res.redirect('/')
 }
 
+export const getUserController =  (req, res) => {
+    res.render('register', {})
+}
+
 export const newUserController = async (req, res) => {
     let { first_name, last_name, email, password, age } = req.body;
     if(!first_name || !last_name || !email || !password || !age) return res.send({status: 'error', error: 'Imcomplete infomation for user creation'})
     let userFound = await getByEmailService(email);
+    let cart = await createCartService()
     if(userFound) return res.status(400).send({status: 'error', error: 'User already exists'})
     password = createHash(password);
     const newUser = {
         first_name,
         last_name,
         email,
+        cart,
         password,
         age
     }
@@ -61,9 +68,12 @@ export const newLoginController = async (req, res) => {
             res.status(400).send({status: "error", error})
         }
         if(!user) return res.render('login-error', {})
-        req.user = user.email
-        req.admin = user.admin
-    res.cookie('authToken', access_token).render('index', {data, user: req.user, rol: req.admin ? "admin" : "pepe", style:'index.css'})
+        req.session.user = user.email
+        req.session.role = user.role
+        const rol = user.role
+        const admin = req.session.admin
+        let contact = new ContactDTO({user, rol, admin})
+    res.cookie('authToken', access_token).render('index', {data, contact, style:'index.css'})
 }
 
 export const failCreateLoginController = (req, res) => {

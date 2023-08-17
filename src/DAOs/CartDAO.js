@@ -35,7 +35,6 @@ class CartsManager {
         let cart;
         try {
             cart = await cartModel.findOne({ _id: ids })
-            console.log(cart)
         } catch (error) {
             throw error
             console.log(error)

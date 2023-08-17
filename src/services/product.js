@@ -1,4 +1,4 @@
-import ProdManager from '../dao/ProductDAO.js';
+import ProdManager from '../DAOs/ProductDAO.js';
 
 const manager = new ProdManager();
 
@@ -29,6 +29,11 @@ export const addproductService = async (title, description, code, price, stock, 
 
 export const updateProductService = async (title, description, code, price, stock, category, status) => {
     let updateProd = await manager.updateProduct(id, { title, description, code, price, stock, category, status })
+    return updateProd
+}
+
+export const updateQuantityProductService = async (pid, quantity) => {
+    let updateProd = await manager.updateQuantityProduct(pid, quantity )
     return updateProd
 }
 

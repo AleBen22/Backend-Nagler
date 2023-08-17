@@ -1,20 +1,30 @@
+import ContactDTO from "../DAOs/DTOs/contact.dto.js";
 import {
     getAllProductsService
 } from "../services/product.js";
+import {
+    getByEmailService
+} from "../services/auth.js"
 
 export const getAllProductsController = async (req, res) => {
     let page = req.params.page || 1;
     let limit = req.params.limit || 10;
+    let user
+    let data
     //let sort = req.params.sort;
     //let filter = req.query.filter;
-    let data
     try {
         data = await getAllProductsService(page, limit)
     } catch (error) {
         res.status(400).send({status: "error", error})
     }
-    if(!req.user) return res.render('login-error', {})
-    req.session.user = req.user.email
-    req.session.admin = req.user.admin
-    res.render('index', {data, user: req.session.user, rol: req.session.admin ? "admin" : "usuario", style:'index.css'})
+    try {
+        user = await getByEmailService(req.session.user)
+    } catch (error) {
+        res.status(400).send({status: "error", error})
+    }
+    const rol = user.role
+    const admin = req.session.admin
+    let contact = new ContactDTO({user, rol, admin})
+    res.render('index', {data, contact, style:'index.css'})
 }

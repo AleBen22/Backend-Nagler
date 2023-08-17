@@ -1,79 +1,117 @@
-<div class="listado">
-    <button onclick="location.href = '/api/session/logout'">Logout</button>
-    <h2>Bienvenido {{user}}</h2>
-    <h2>Rol: {{rol}}</h2>
-</div>
-<div class="listado">
-    <h1>Listado de Productos</h1>
-    <table>
-        <thead>
-            <th>Id</th>
-            <th>Status</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Code</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Category</th>
-        </thead>
-        <tbody>
-            {{#each data.payload}}
-                <tr>
-                    <td>{{_id}}</td>
-                    <td>{{status}}</td>
-                    <td>{{title}}</td>
-                    <td>{{description}}</td>
-                    <td>{{code}}</td>
-                    <td>{{price}}</td>
-                    <td>{{stock}}</td>
-                    <td>{{category}}</td>
-                    <td><button id="agree" class="button">Agregar</button></td>
-                </tr>
-            {{/each}}
-        </tbody>
-    </table>
-    <ul>
-        {{#if data.hasPrevPage}}
-        <li><a href="{{data.prevLink}}">Anterior</a></li>
-        {{/if}}
-        {{#if data.hasNextPage}}
-        <li><a href="{{data.nextLink}}">Siguiente</a></li>
-        {{/if}}
-    </ul>    
-</div>
-<div class="div">
-    <h3>Producto Nuevo</h3>
-        <label>Nombre</label>
-        <br>
-        <input type="text" id="title" class="textbox"/>
-        <br>
-        <label>Descripcion</label>
-        <br>
-        <input type="text" id="description" class="textbox"/>
-        <br>
-        <label>Codigo</label>
-        <br>
-        <input type="text" id="code" class="textbox"/>
-        <br>
-        <label>Precio</label>
-        <br>
-        <input type="number" id="price" class="textbox"/>
-        <br>
-        <label>Stock</label>
-        <br>
-        <input type="number" id="stock" class="textbox"/>
-        <br>
-        <label>Categoria</label>
-        <br>
-        <input type="text" id="category" class="textbox"/>
-        <br>
-        <button id="agree" class="agregar">Agregar</button>
-</div>
-<div class="div">
-    <h3>Eliminar Producto</h3>
-        <label>Id</label>
-        <br>
-        <input type="text" id="productid" class="textbox"/>
-        <br>
-        <button id="delete" class="agregar">Agregar</button>
-</div>
+<div class="body">
+    <div class="listado">
+        <button onclick="location.href = '/api/session/logout'">Logout</button>
+        <h2>Bienvenido {{contact.full_name}}</h2>
+        <h2>Rol: {{contact.rol}}</h2>
+        <input type="text" id="user" class="textbox" value={{contact.user}}>
+        <input type="text" id="cart" class="textbox" value={{contact.cart}}>
+    </div>
+    <div class="listado">
+        <h1>Listado de Productos</h1>
+        <table>
+            <thead>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Code</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Category</th>
+            </thead>
+            <tbody>
+                {{#if contact.admin}}
+                    {{#each data.payload}}
+                        <tr>
+                            <td>{{_id}}</td>
+                            <td>{{status}}</td>
+                            <td>{{title}}</td>
+                            <td>{{description}}</td>
+                            <td>{{code}}</td>
+                            <td>{{price}}</td>
+                            <td>{{stock}}</td>
+                            <td>{{category}}</td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    {{#each data.payload}}
+                        <tr>
+                            <td>{{_id}}</td>
+                            <td>{{status}}</td>
+                            <td>{{title}}</td>
+                            <td>{{description}}</td>
+                            <td>{{code}}</td>
+                            <td>{{price}}</td>
+                            <td>{{stock}}</td>
+                            <td>{{category}}</td>
+                            <td>
+                                <input type="number" id="quantity" min="0" max={{stock}}>
+                            </td>
+                            <td>
+                                <input type="text" id="prueba" class="textbox" value={{_id}}>
+                            </td>
+                            <td>
+                                <button id="agregar" class="button" value={{_id}}>Agregar</button>
+                            </td>
+                        </tr>
+                    {{/each}}       
+                {{/if}}
+            </tbody>
+        </table>
+        <ul>
+            {{#if data.hasPrevPage}}
+            <li><a href="{{data.prevLink}}">Anterior</a></li>
+            {{/if}}
+            {{#if data.hasNextPage}}
+            <li><a href="{{data.nextLink}}">Siguiente</a></li>
+            {{/if}}
+        </ul>    
+    </div>
+    {{#if contact.admin}}
+        <div class="div">
+            <h3>Producto Nuevo</h3>
+                <label>Nombre</label>
+                <br>
+                <input type="text" id="title" class="textbox"/>
+                <br>
+                <label>Descripcion</label>
+                <br>
+                <input type="text" id="description" class="textbox"/>
+                <br>
+                <label>Codigo</label>
+                <br>
+                <input type="text" id="code" class="textbox"/>
+                <br>
+                <label>Precio</label>
+                <br>
+                <input type="number" id="price" class="textbox"/>
+                <br>
+                <label>Stock</label>
+                <br>
+                <input type="number" id="stock" class="textbox"/>
+                <br>
+                <label>Categoria</label>
+                <br>
+                <input type="text" id="category" class="textbox"/>
+                <br>
+                <button id="new" class="agregar">Agregar</button>
+        </div>
+        <div class="div">
+            <h3>Eliminar Producto</h3>
+                <label>Id</label>
+                <br>
+                <input type="text" id="productid" class="textbox"/>
+                <br>
+                <button id="delete" class="agregar">Eliminar</button>
+        </div>
+    </div>
+{{else}}
+    <aside>
+        <div>
+            <p id="messageLogs"></p>
+        </div>
+        <div>
+            <input id="chatBox">
+        </div>
+    </aside>
+{{/if}}

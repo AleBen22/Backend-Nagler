@@ -1,5 +1,5 @@
 .listado {
-    width: 100%;
+    width: 80%;
     float: left;
     padding-left: 3%;
 }
@@ -30,7 +30,7 @@ li {
 }
 
 .textbox {
-    width: 80%;
+    width: 60%;
     border-radius: 10px;
     border: 4px, #ff751a;
     border-color: #ff751a;
@@ -45,6 +45,7 @@ li {
     height: 40px;
     border-radius: 30px;
     border: 0 none;
+    padding: 10px;
     margin-top: 10px;
     margin-left: 6%;
     font-size: 20px;
@@ -74,4 +75,24 @@ li {
 .agregar:hover {
     background-color: rgba(255, 123, 0, 0.9);
     cursor: pointer;
+}
+
+aside{
+    width:20%;
+    height: 100vh;
+    background-color: #9b9797;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.body{
+    width: 70%;
+}
+
+#chatBox{
+    width: 100%;
+    background-color: #fff2f2;
+    position: fixed;
+    bottom: 1vh;
 }

@@ -7,8 +7,15 @@ import {
     deleteProductFromCartService
 } from "../services/cart.js"
 import {
-    getProductByIdService
-} from './services/product.js';
+    getProductByIdService,
+    updateQuantityProductService
+} from "../services/product.js"
+import {
+    getCartIdByUserService
+} from "../services/auth.js"
+import {
+    createTicketService
+} from "../services/ticket.js"
 
 export const getAllCartsController = async (req, res) => {
     let carts
@@ -89,4 +96,57 @@ export const deleteProductFromCartController = async (req, res) => {
         res.status(400).send({ status: 'error', msg: error})
     }
         res.send(deleteFromCart)
+}
+
+export const createTicketFromCartController = async (req, res) => {
+    let cid = req.params.cid
+    let cart
+    let amount = 0
+    let purchaser
+    let result
+    try {
+        cart = await getCartByIdService(cid)
+    } catch (error) {
+        res.status(400).send({ status: 'error', msg: `El id ${cid} no corresponde a un carrito ${error}` });
+    }
+    if(cart){
+        for(var i = 0; i < cart.products.length;i++){
+            let pid = cart.products[i].id._id        
+            let product
+            let deleteFromCart
+            try {
+                product = await getProductByIdService(pid)
+            } catch (error) {
+                res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
+            }
+            if(product.stock>cart.products[i].quantity){
+                await updateQuantityProductService(cart.products[i].id._id, (product.stock-cart.products[i].quantity))
+                amount = amount + (cart.products[i].id.price * cart.products[i].quantity)
+                try {
+                    deleteFromCart = await deleteProductFromCartService(cid, pid)
+                } catch (error) {
+                    res.status(400).send({ status: 'error', msg: error})
+                }
+            }else{
+                console.log("no hay stock")
+            }
+        }
+        if(amount === 0){
+            result = "No hay productos para generar un ticket"
+        } else {
+        try {
+            purchaser = await getCartIdByUserService(cid)
+        } catch (error) {
+            res.status(400).send({ status: 'error', msg: `El cart no corresponde a un usuario registrado ${cid}` });
+        }
+        let code = Date.now() + Math.floor(Math.random()*10000+1)
+        let ticket = {
+            purchaser: purchaser.email,
+            amount: amount,
+            code: code
+        }
+        result = await createTicketService(ticket)
+    }
+    res.send({ status: "success", payload: result })
+    }
 }

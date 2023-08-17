@@ -1,3 +1,4 @@
+import { userMiddleware } from "../middlewares/auth.js";
 import { Router } from 'express';
 import {
     getAllCartsController,
@@ -5,7 +6,8 @@ import {
     createCartController,
     addProductToCartController,
     deleteCartController,
-    deleteProductFromCartController
+    deleteProductFromCartController,
+    createTicketFromCartController
 } from '../controllers/cart.js';
 
 const cartRouter = Router();
@@ -13,8 +15,10 @@ const cartRouter = Router();
 cartRouter.get('/', getAllCartsController)
 cartRouter.get('/:cid', getCartByIdController)
 cartRouter.post('/', createCartController)
-cartRouter.put('/:cid/product/:pid', addProductToCartController)
+cartRouter.put('/:cid/product/:pid', userMiddleware, addProductToCartController)
 cartRouter.delete('/:cid', deleteCartController)
-cartRouter.delete('/:cid/product/:pid', deleteProductFromCartController)
+cartRouter.delete('/:cid/product/:pid', userMiddleware, deleteProductFromCartController)
+
+cartRouter.post('/:cid/purchase', createTicketFromCartController)
 
 export default cartRouter;

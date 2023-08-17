@@ -58,6 +58,17 @@ async updateProduct(pid, fields) {
     return product;
 }
 
+async updateQuantityProduct(pid, quantity) {
+    let product;
+    try {
+        product = await productModel.updateOne({ _id: pid }, { $set: {"stock": quantity } } )
+    } catch (error) {
+        throw error
+        console.log(error)
+    }
+    return product;
+}
+
 async deleteProduct(id) {
     let product
     try {

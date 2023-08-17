@@ -10,5 +10,6 @@ viewsRouter.get('/', authMiddleware, getAllProductsController)
 viewsRouter.get('/limit/:limit?', authMiddleware, getAllProductsController)
 viewsRouter.get('/page/:page?', authMiddleware, getAllProductsController)
 viewsRouter.get('/limit/:limit?/page/:page?', authMiddleware, getAllProductsController)
+viewsRouter.get('/current', authMiddleware, getAllProductsController)
 
 export default viewsRouter

@@ -6,6 +6,7 @@ export const getAll = async () => {
     try {
         result = await userModel.find()
     } catch (error) {
+        throw error
         console.log(error)
     }
     return result
@@ -16,6 +17,18 @@ export const getByEmail = async email => {
     try {
         result = await userModel.findOne( {email} )
     } catch (error) {
+        throw error
+        console.log(error)
+    }
+    return result
+}
+
+export const getByCartId = async cid => {
+    let result;
+    try {
+        result = await userModel.findOne( {"cart": cid} )
+    } catch (error) {
+        throw error
         console.log(error)
     }
     return result
@@ -26,6 +39,7 @@ export const getById = async id => {
     try {
         result = await userModel.findOne( {_id: id} )
     } catch (error) {
+        throw error
         console.log(error)
     }
     return result
@@ -36,6 +50,7 @@ export const createUser = async user => {
     try {
         result = await userModel.create(user)
     } catch (error) {
+        throw error
         console.log(error)
     }
     return result
@@ -46,6 +61,7 @@ export const updateUserPassword = async (email, newPassword) => {
     try {
         result = await userModel.updateOne({email: email}, {$set: {password: newPassword}})
     } catch (error) {
+        throw error
         console.log(error)
     }
     return result

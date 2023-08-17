@@ -1,4 +1,4 @@
-import { getByEmail, createUser, updateUserPassword } from "../dao/UserDAO.js";
+import { getByEmail, createUser, updateUserPassword, getByCartId } from "../DAOs/UserDAO.js";
 
 export const getByEmailService = async (email) => {
     let userFound = await getByEmail(email);
@@ -7,6 +7,14 @@ export const getByEmailService = async (email) => {
 
 export const createUserService = async (newUser) => {
     await createUser(newUser)
+}
+
+export const getCartIdByUserService = async (cid) => {
+    let cart = await getByCartId(cid)
+    if(!cart){
+        return null
+    }
+    return cart
 }
 
 export const updateUserPasswordService = async (user, newPassword) => {

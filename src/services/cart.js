@@ -1,4 +1,4 @@
-import CartsManager from '../dao/CartDAO.js';
+import CartsManager from '../DAOs/CartDAO.js';
 
 const manager = new CartsManager();
 
@@ -9,6 +9,9 @@ export const getAllCartsService = async () => {
 
 export const getCartByIdService = async (id) => {
     let cart = await manager.getCartById(id)
+    if(!cart){
+        return null
+    }
     return cart
 }
 

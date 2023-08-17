@@ -3,16 +3,17 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import mongoose from 'mongoose';
 import viewsRouter from './src/routes/views.js';
-import sessionRouter from './src/routes/auth.js'
+import authRouter from './src/routes/auth.js';
+import productRouter from './src/routes/product.js'
+import cartRouter from './src/routes/cart.js';
 import handlebars from 'express-handlebars';
 import passport from 'passport';
 import initializePassport from './src/config/passport.config.js';
 import config from './src/config/config.js';
 import cookieParser from 'cookie-parser';
-
-// import { Server } from 'socket.io';
-// import ProdManager from './src/dao/ProductDAO.js';
-// const prodmanager = new ProdManager();
+import { Server } from 'socket.io';
+import { addproductService, deleteProductService } from './src/services/product.js';
+import { addProductToCartService } from './src/services/cart.js'
 
 const app = express();
 
@@ -35,7 +36,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: MONGO_CONNECTION_STRING,
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 20
+        ttl: 360
     }),
     secret: 'secretCoder',
     saveUninitialized: false,
@@ -45,24 +46,44 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/session', sessionRouter)
+app.use('/api/session', authRouter)
+app.use('/api/products', productRouter)
+app.use('/api/carts', cartRouter)
 app.use('/', viewsRouter)
 
 const PORT = config.PORT;
 const httpServer = app.listen(PORT, () => console.log(`Server is running on port: ${httpServer.address().port}`))
 
-// httpServer.on('error', error => console.log(error))
+httpServer.on('error', error => console.log(error))
 
-// const socketServer = new Server(httpServer);
+const socketServer = new Server(httpServer);
 
-// socketServer.on('connection', socket => {
-//     console.log('nuevo socket conectado')
-//     socket.on('addproduct', async data => {
-//         await prodmanager.addProduct(data)
-//         socketServer.emit('respond', 'producto agregado')
-//     })
-//     socket.on('deleteproduct', async data => {
-//         await prodmanager.deleteProduct(data)
-//         socketServer.emit('respond', 'producto eliminado')
-//     })
-// })
+const mensajes = []
+
+socketServer.on('connection', socket => {
+    console.log('nuevo socket conectado')
+
+    socket.emit('messages', mensajes)
+
+    socket.on('newproduct', async (product) => {
+        addproductService(product.title, product.description, product.code, product.price, product.stock, product.category, product.status)
+        socketServer.emit('respond', 'producto agregado')
+    })
+
+    socket.on('deleteproduct', async data => {
+        deleteProductService(data)
+        socketServer.emit('respond', 'producto eliminado')
+    })
+
+    socket.on('addproducttocart', async (data) => {
+        console.log(data)
+        addProductToCartService(data.cid, data.pid, data.quantity)
+        socketServer.emit('respond', 'producto agregado al carrito')
+    })
+
+    socket.on('message', data => {
+        mensajes.push(data);
+        socketServer.emit("messages", mensajes)
+    })
+
+})

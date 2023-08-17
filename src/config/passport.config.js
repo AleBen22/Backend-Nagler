@@ -3,7 +3,8 @@ import jwt from "passport-jwt";
 import local from "passport-local";
 import GitHubStrategy from 'passport-github2';
 import config from "./config.js";
-import { createUser, getAll, getByEmail, updateUserPassword, getById } from '../dao/UserDAO.js';
+import { createUser, getAll, getByEmail, updateUserPassword, getById } from '../DAOs/UserDAO.js';
+import { createCartService } from "../services/cart.js";
 import { createHash, isValidPassword } from "../utils/index.js";
 
 const LocalStrategy = local.Strategy;
@@ -33,10 +34,12 @@ const initializePassport = () => {
             let userEmail = profile.emails[0].value;
             let user = await getByEmail(userEmail);
             if(!user){
+                let newCart = await createCartService()
                 let newUser = {
                     first_name: profile._json.login,
-                    last_name: "",
+                    last_name: profile._json.name,
                     email: userEmail,
+                    cart: newCart,
                     password: "",
                     age: 23
                 }
