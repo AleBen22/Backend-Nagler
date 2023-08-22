@@ -5,6 +5,12 @@ import {
     updateProductService,
     deleteProductService
 } from '../services/product.js';
+import {
+    generarProductos
+} from '../mocks/product.js'
+import CustomError from "../services/errors/CustomError.js";
+import EErrors from "../services/errors/enums.js";
+import { generateProductErrorInfo } from "../services/errors/info.js";
 import { validateProduct } from '../utils/index.js';
 
 export const getAllProductsController = async (req, res) => {
@@ -37,7 +43,13 @@ export const addProductController = async (req, res) => {
     let producto = req.body;
     let result
     if(!validateProduct(producto)) {
-        res.status(400).send({ status: 'error', msg: 'Falta información'})
+        CustomError.createError({
+            name: 'Error al registrar producto',
+            cause: generateProductErrorInfo({ title, description, code, price, stock, category }),
+            message: 'Error al intentar crear el producto',
+            code: EErrors.INVALID_TYPES
+        })
+//        res.status(400).send({ status: 'error', msg: 'Falta información'})
     }
     try {
         result = await addproductService(title, description, code, price, stock, category, status)
@@ -72,4 +84,10 @@ export const deleteProductController = async (req, res) => {
         res.status(400).send({ status: 'error', msg: `El id ${id} no corresponde a un producto`})
     }
         res.send({ status: 'success', msg: `El id ${id} fue eliminado`})
+}
+
+export const getFakerProduct = async (req, res) => {
+    let cant = req.params.cant
+    let product = generarProductos(cant)
+    res.send(product)
 }

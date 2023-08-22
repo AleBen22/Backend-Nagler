@@ -5,7 +5,7 @@ import {
     getProductByIdController,
     addProductController,
     updateProductController,
-    deleteProductController
+    deleteProductController,
 } from '../controllers/product.js';
 
 const productRouter = Router();
@@ -13,7 +13,8 @@ const productRouter = Router();
 productRouter.get('/', getAllProductsController)
 productRouter.get('/limit/:limit?/page/:page?', getAllProductsController)
 productRouter.get('/:pid', getProductByIdController)
-productRouter.post('/', adminMiddleware, addProductController)
+//productRouter.post('/', adminMiddleware, addProductController)
+productRouter.post('/', addProductController)
 productRouter.put('/:pid', adminMiddleware, updateProductController)
 productRouter.delete('/:pid', adminMiddleware, deleteProductController)
 

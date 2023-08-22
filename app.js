@@ -6,11 +6,13 @@ import viewsRouter from './src/routes/views.js';
 import authRouter from './src/routes/auth.js';
 import productRouter from './src/routes/product.js'
 import cartRouter from './src/routes/cart.js';
+import fakerRouter from './src/routes/fakerproduct.js';
 import handlebars from 'express-handlebars';
 import passport from 'passport';
 import initializePassport from './src/config/passport.config.js';
 import config from './src/config/config.js';
 import cookieParser from 'cookie-parser';
+import errorHandler from './src/middlewares/errors/index.js'
 import { Server } from 'socket.io';
 import { addproductService, deleteProductService } from './src/services/product.js';
 import { addProductToCartService } from './src/services/cart.js'
@@ -50,6 +52,8 @@ app.use('/api/session', authRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 app.use('/', viewsRouter)
+app.use('/mockingproducts', fakerRouter)
+app.use(errorHandler)
 
 const PORT = config.PORT;
 const httpServer = app.listen(PORT, () => console.log(`Server is running on port: ${httpServer.address().port}`))
