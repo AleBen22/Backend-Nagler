@@ -52,11 +52,12 @@ export const addProductController = async (req, res) => {
 //        res.status(400).send({ status: 'error', msg: 'Falta información'})
     }
     try {
-        result = await addproductService(title, description, code, price, stock, category, status)
+        result = await addproductService(title, description, code, price, stock, category, status);
+        res.send({ status: "success", payload: result });
     } catch (error) {
+        console.log("LLEGUE AL ERROR");
         res.status(400).send({ status: 'error', error });
     }
-        res.send({ status: "success", payload: result })
 }
 
 export const updateProductController = async (req, res) => {
