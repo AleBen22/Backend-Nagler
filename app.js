@@ -29,6 +29,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'))
+app.use(errorHandler)
 
 app.engine('.hbs', handlebars.engine( { extname: '.hbs', defaultLayout: 'main.hbs'}));
 app.set('view engine', '.hbs')
@@ -53,7 +54,6 @@ app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 app.use('/', viewsRouter)
 app.use('/mockingproducts', fakerRouter)
-app.use(errorHandler)
 
 const PORT = config.PORT;
 const httpServer = app.listen(PORT, () => console.log(`Server is running on port: ${httpServer.address().port}`))

@@ -7,3 +7,11 @@ export const generateProductErrorInfo = (product) => {
     - stock: necesita recibir un Number, recibio: ${product.stock}
     - category: necesita recibir un String, recibio: ${product.category}`
 }
+
+export const generatePIDErrorInfo = pid => {
+    return `El id no corresponde a un producto existente, se recibió: ${pid}`
+}
+
+export const generateConexionError = error => {
+    return `Error al correr servicio, se recibió: ${error}`
+}    
