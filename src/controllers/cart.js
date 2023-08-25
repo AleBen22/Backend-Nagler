@@ -38,13 +38,7 @@ export const getCartByIdController = async (req, res) => {
         cart = await getCartByIdService(id)
         res.send({ status: "success", payload: cart })
     } catch (error) {
-        CustomError.createError({
-            name: 'Id invalido',
-            cause: generatePIDErrorInfo(id),
-            message: 'El id ingresado es invalido',
-            code: EErrors.INVALID_PARAM_ERROR
-        })
-//        res.status(400).send({ status: 'error', msg: `El id ${id} no corresponde a un carrito ${error}` });
+        res.status(400).send({ status: 'error', msg: `El id ${id} no corresponde a un carrito ${error}` });
     }
 }
 
@@ -66,13 +60,7 @@ export const addProductToCartController = async (req, res) => {
     try {
         await getProductByIdService(pid)
     } catch (error) {
-        CustomError.createError({
-            name: 'Id invalido',
-            cause: generatePIDErrorInfo(id),
-            message: 'El id ingresado es invalido',
-            code: EErrors.INVALID_PARAM_ERROR
-        })
-//        res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
+        res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
     }
     if(quantity< 0){
         res.status(400).send({ status: 'error', msg: "La cantidad debe ser mayor a 0" });
@@ -93,13 +81,7 @@ export const deleteCartController = async (req, res) => {
         deleteCart = await deleteCartService(cid)
         res.send({ status: 'success', payload: deleteCart})
     } catch (error) {
-        CustomError.createError({
-            name: 'Id invalido',
-            cause: generatePIDErrorInfo(cid),
-            message: 'El id ingresado es invalido',
-            code: EErrors.INVALID_PARAM_ERROR
-        })
-//        res.status(400).send({ status: 'error', msg: `El cart id ${pid} no corresponde a un carrito existente` });
+        res.status(400).send({ status: 'error', msg: `El cart id ${cid} no corresponde a un carrito existente` });
     }
 }
 
@@ -110,25 +92,13 @@ export const deleteProductFromCartController = async (req, res) => {
     try {
         await getProductByIdService(pid)
     } catch (error) {
-        CustomError.createError({
-            name: 'Id invalido',
-            cause: generatePIDErrorInfo(id),
-            message: 'El id ingresado es invalido',
-            code: EErrors.INVALID_PARAM_ERROR
-        })
-//        res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
+        res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
     }
     try {
         deleteFromCart = await deleteProductFromCartService(cid, pid)
         res.send(deleteFromCart)
     } catch (error) {
-        CustomError.createError({
-            name: 'Error de conexion',
-            cause: generateConexionError(error),
-            message: 'Se genero un error al conectar con el servicio',
-            code: EErrors.DATABASE_ERROR
-        })
-//        res.status(400).send({ status: 'error', msg: error})
+        res.status(400).send({ status: 'error', msg: error})
     }
 }
 
@@ -141,13 +111,7 @@ export const createTicketFromCartController = async (req, res) => {
     try {
         cart = await getCartByIdService(cid)
     } catch (error) {
-        CustomError.createError({
-            name: 'Id invalido',
-            cause: generatePIDErrorInfo(id),
-            message: 'El id ingresado es invalido',
-            code: EErrors.INVALID_PARAM_ERROR
-        })
-//        res.status(400).send({ status: 'error', msg: `El id ${cid} no corresponde a un carrito ${error}` });
+        res.status(400).send({ status: 'error', msg: `El id ${cid} no corresponde a un carrito ${error}` });
     }
     if(cart){
         for(var i = 0; i < cart.products.length;i++){
@@ -157,13 +121,7 @@ export const createTicketFromCartController = async (req, res) => {
             try {
                 product = await getProductByIdService(pid)
             } catch (error) {
-                CustomError.createError({
-                    name: 'Id invalido',
-                    cause: generatePIDErrorInfo(id),
-                    message: 'El id ingresado es invalido',
-                    code: EErrors.INVALID_PARAM_ERROR
-                })
-//                res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
+                res.status(400).send({ status: 'error', msg: `El product id ${pid} no corresponde a un producto existente` });
             }
             if(product.stock>cart.products[i].quantity){
                 await updateQuantityProductService(cart.products[i].id._id, (product.stock-cart.products[i].quantity))
@@ -171,13 +129,7 @@ export const createTicketFromCartController = async (req, res) => {
                 try {
                     deleteFromCart = await deleteProductFromCartService(cid, pid)
                 } catch (error) {
-                    CustomError.createError({
-                        name: 'Error de conexion',
-                        cause: generateConexionError(error),
-                        message: 'Se genero un error al conectar con el servicio',
-                        code: EErrors.DATABASE_ERROR
-                    })
-//                    res.status(400).send({ status: 'error', msg: error})
+                    res.status(400).send({ status: 'error', msg: error})
                 }
             }else{
                 console.log("no hay stock")
