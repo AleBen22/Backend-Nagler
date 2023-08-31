@@ -16,22 +16,29 @@ import errorHandler from './src/middlewares/errors/index.js'
 import { Server } from 'socket.io';
 import { addproductService, deleteProductService } from './src/services/product.js';
 import { addProductToCartService } from './src/services/cart.js'
+import { addLogger } from './src/utils/logger.js'
+import { cpus } from 'os'
+
+
+
+console.log(cpus().length)
 
 const app = express();
 
 const MONGO_CONNECTION_STRING = config.MONGO_CONNECTION_STRING
-
-mongoose.connect(MONGO_CONNECTION_STRING)
-    .then(() => console.log('Database connected'))
-    .catch(error => console.log(error))
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'))
 app.use(errorHandler)
+app.use(addLogger)
 
-app.engine('.hbs', handlebars.engine( { extname: '.hbs', defaultLayout: 'main.hbs'}));
+mongoose.connect(MONGO_CONNECTION_STRING)
+    .then(() => console.log('Database connected'))
+    .catch(error => console.log(error))
+
+app.engine('.hbs', handlebars.engine({ extname: '.hbs', defaultLayout: 'main.hbs' }));
 app.set('view engine', '.hbs')
 app.set('views', './views');
 
@@ -54,6 +61,17 @@ app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 app.use('/', viewsRouter)
 app.use('/mockingproducts', fakerRouter)
+
+app.get('/loggerTest', (req, res) => {
+    req.logger.fatal('log fatal')
+    req.logger.error('log error')
+    req.logger.warning('log warning')
+    req.logger.info('log info')
+    req.logger.http('log http')
+    req.logger.debug('log debug')
+    res.send("ok")
+})
+
 
 const PORT = config.PORT;
 const httpServer = app.listen(PORT, () => console.log(`Server is running on port: ${httpServer.address().port}`))

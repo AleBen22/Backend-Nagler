@@ -4,6 +4,9 @@ const manager = new CartsManager();
 
 export const getAllCartsService = async () => {
     let carts = await manager.getCarts()
+    if(!carts){
+        return null
+    }
     return carts
 }
 
@@ -17,6 +20,9 @@ export const getCartByIdService = async (id) => {
 
 export const createCartService = async () => {
     let cart =  await manager.createCart();
+    if(!cart){
+        return null
+    }
     return cart
 }
 

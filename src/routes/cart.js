@@ -15,7 +15,8 @@ const cartRouter = Router();
 cartRouter.get('/', getAllCartsController)
 cartRouter.get('/:cid', getCartByIdController)
 cartRouter.post('/', createCartController)
-cartRouter.put('/:cid/product/:pid', userMiddleware, addProductToCartController)
+//cartRouter.put('/:cid/product/:pid', userMiddleware, addProductToCartController)
+cartRouter.put('/:cid/product/:pid', addProductToCartController)
 cartRouter.delete('/:cid', deleteCartController)
 cartRouter.delete('/:cid/product/:pid', userMiddleware, deleteProductFromCartController)
 

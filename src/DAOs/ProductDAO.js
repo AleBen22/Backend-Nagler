@@ -12,7 +12,6 @@ async getAllProducts(page, limit){
         productos = await this.model.paginate({}, { page, limit: limit, lean:true })
     } catch (error) {
         throw error
-        console.log(error)
     }
     return productos;
 }
@@ -22,8 +21,8 @@ async getProductById(ids) {
     try {
         product = await this.model.findOne({ _id: ids })
     } catch (error) {
-        throw error
-        console.log(error)
+        return null
+        //throw error
     }
     return product;
 }
@@ -42,7 +41,6 @@ async addProduct(title, description, code, price, stock, category, status) {
         });
     } catch (error) {
         throw error
-        console.log(error)
     }
     return product
 }
@@ -53,7 +51,6 @@ async updateProduct(pid, fields) {
         product = await productModel.updateOne({ _id: pid }, fields)
     } catch (error) {
         throw error
-        console.log(error)
     }
     return product;
 }
@@ -64,7 +61,6 @@ async updateQuantityProduct(pid, quantity) {
         product = await productModel.updateOne({ _id: pid }, { $set: {"stock": quantity } } )
     } catch (error) {
         throw error
-        console.log(error)
     }
     return product;
 }
@@ -75,7 +71,6 @@ async deleteProduct(id) {
         product = await productModel.deleteOne({ _id: id })
     } catch (error) {
         throw error
-        console.log(error)
     }
     return product;
 }

@@ -12,6 +12,14 @@ export const generatePIDErrorInfo = pid => {
     return `El id no corresponde a un producto existente, se recibió: ${pid}`
 }
 
+export const generateCIDErrorInfo = cid => {
+    return `El cart no corresponde a un usuario registrado, se recibió: ${cid}`
+}
+
+export const generateQuantityErrorInfo = pid => {
+    return `El valor ingresado no corresponde a un numero mayor a 0, se recibió: ${pid}`
+}
+
 export const generateConexionError = error => {
     return `Error al correr servicio, se recibió: ${error}`
 }    

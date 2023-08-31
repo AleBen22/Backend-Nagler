@@ -12,12 +12,12 @@ import { generateProductErrorInfo, generatePIDErrorInfo, generateConexionError }
 import { validateProduct } from '../utils/index.js';
 
 export const getAllProductsController = async (req, res) => {
-    let page = req.params.page || 1;
-    let limit = req.params.limit || 10;
-    //let sort = req.params.sort;
-    //let filter = req.query.filter;
-    let data
     try {
+        let page = req.params.page || 1;
+        let limit = req.params.limit || 10;
+        //let sort = req.params.sort;
+        //let filter = req.query.filter;
+        let data
         data = await getAllProductsService(page, limit)
         res.send({ status: "success", data })
     } catch (error) {
@@ -26,9 +26,9 @@ export const getAllProductsController = async (req, res) => {
 }
 
 export const getProductByIdController = async (req, res) => {
-    let id = req.params.pid;
-    let product
     try {
+        let id = req.params.pid;
+        let product
         product = await getProductByIdService(id)
         res.send({ status: "success", product }) 
     } catch (error) {
@@ -38,18 +38,18 @@ export const getProductByIdController = async (req, res) => {
 
 export const addProductController = async (req, res) => {
     try {
-    let { title, description, code, price, stock, category, status } = req.body;
-    let producto = req.body;
-    if(!validateProduct(producto)) {
-        CustomError.createError({
-            name: 'Error al registrar producto',
-            cause: generateProductErrorInfo({ title, description, code, price, stock, category }),
-            message: 'Error al intentar crear el producto',
-            code: EErrors.INVALID_TYPES_ERROR
-        })
-    }
-    let result = await addproductService(title, description, code, price, stock, category, status)
-    res.send({ status: "success", payload: result })
+        let { title, description, code, price, stock, category, status } = req.body;
+        let producto = req.body;
+        if(!validateProduct(producto)) {
+            CustomError.createError({
+                name: 'Error al registrar producto',
+                cause: generateProductErrorInfo({ title, description, code, price, stock, category }),
+                message: 'Error al intentar crear el producto',
+                code: EErrors.INVALID_TYPES_ERROR
+            })
+        }
+        let result = await addproductService(title, description, code, price, stock, category, status)
+        res.send({ status: "success", payload: result })
     } catch (error) {
         res.status(400).send({ status: "error", error });
     }
@@ -76,9 +76,9 @@ export const updateProductController = async (req, res) => {
 }
 
 export const deleteProductController = async (req, res) => {
-    let id = req.params.pid;
-    let deleteProd
     try {
+        let id = req.params.pid;
+        let deleteProd
         deleteProd = await deleteProductService(id)
         res.send({ status: 'success', msg: `El id ${id} fue eliminado`})
     } catch (error) {

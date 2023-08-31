@@ -8,6 +8,14 @@ export const validateProduct = product => {
     return result
 }
 
+export const validateNumber = number => {
+    let result = true
+    if(!number || isNaN(number) || number < 0) {
+        result = false
+    }
+    return result
+}
+
 export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
 export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password);

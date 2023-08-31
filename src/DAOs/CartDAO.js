@@ -15,7 +15,6 @@ class CartsManager {
             resp = await cartModel.create( newCart )
         } catch (error) {
             throw error
-            console.log(error)
         }
         return resp
     }
@@ -26,7 +25,6 @@ class CartsManager {
             carts = await cartModel.find()
         } catch (error) {
             throw error
-            console.log(error)
         }
         return carts
     }
@@ -36,8 +34,8 @@ class CartsManager {
         try {
             cart = await cartModel.findOne({ _id: ids })
         } catch (error) {
-            throw error
-            console.log(error)
+            return null
+            //throw error
         }
         return cart;
     }
@@ -49,7 +47,6 @@ class CartsManager {
             cart = this.getCartById(cid)
         } catch (error) {
             throw error
-            console.log(error)
         }
         try {
             let prodCart = await cartModel.findOne({ _id: cid, "products.id": pid},{"products.quantity": true})
@@ -62,7 +59,6 @@ class CartsManager {
             }
         } catch (error) {
             throw error
-            console.log(error)
         }
         return result;
     }
@@ -73,7 +69,6 @@ class CartsManager {
             result = await cartModel.findOneAndUpdate({ _id: cid }, { $pull: { products:  { quantity: {$gte: 0} }} } )
         } catch (error) {
             throw error
-            console.log(error)
         }
         return result
     }
@@ -85,7 +80,6 @@ class CartsManager {
             cart = this.getCartById(cid)
         } catch (error) {
             throw error
-            console.log(error)
         }
         try {
             let prodCart = await cartModel.findOne({ _id: cid, "products.id": pid},{"products.id": true})
@@ -97,7 +91,6 @@ class CartsManager {
             }
         } catch (error) {
             throw error
-            console.log(error)
         }
         return result;
     }
