@@ -1,7 +1,7 @@
 export const authMiddleware = (req, res, next) => {
     if(req.session.user){
         if(req.session.user.email) {
-            if(req.session.user.role === "admin") {
+            if(req.session.user.role === "admin" || req.session.role === "premium") {
                 req.session.role = req.session.user.role
                 req.session.admin = true
             } else {
@@ -9,7 +9,7 @@ export const authMiddleware = (req, res, next) => {
             }
             req.session.user = req.session.user.email
         } else {
-        if(req.session.role === "admin") {
+        if(req.session.role === "admin" || req.session.role === "premium") {
             req.session.admin = true
         } else {
             req.session.admin = false
@@ -23,7 +23,7 @@ export const authMiddleware = (req, res, next) => {
 
 export const adminMiddleware = (req, res, next) => {
     if(req.session.user){
-        if(req.session.role === "admin") {
+        if(req.session.role === "admin" || req.session.role === "premium") {
             next()
         } else {
             res.status(400).send({status: "No posee autorizacion"})
@@ -35,7 +35,7 @@ export const adminMiddleware = (req, res, next) => {
 
 export const userMiddleware = (req, res, next) => {
     if(req.session.user){
-        if(req.session.role === "user") {
+        if(req.session.role === "user" || req.session.role === "premium") {
             next()
         } else {
             res.status(400).send({status: "No posee autorizacion"})

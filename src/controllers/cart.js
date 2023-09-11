@@ -18,7 +18,7 @@ import {
 } from "../services/ticket.js"
 import CustomError from "../services/errors/CustomError.js";
 import EErrors from "../services/errors/enums.js";
-import { generateQuantityErrorInfo, generatePIDErrorInfo, generateCIDErrorInfo } from "../services/errors/info.js";
+import { generateQuantityErrorInfo, generatePIDErrorInfo, generateCIDErrorInfo, generateOwnerError } from "../services/errors/info.js";
 import { validateNumber } from '../utils/index.js';
 
 export const getAllCartsController = async (req, res) => {
@@ -63,6 +63,7 @@ export const createCartController = async (req, res) => {
 export const addProductToCartController = async (req, res) => {
     let cid = req.params.cid
     let pid = req.params.pid;
+    let user = req.session.user;
     let { quantity } = req.body;
     let addToCart
     let result
@@ -82,7 +83,14 @@ export const addProductToCartController = async (req, res) => {
                 message: 'El parametro ingresado no es valido',
                 code: EErrors.INVALID_TYPES_ERROR
             })
-        } else {
+        } else if(result.owner === user) {
+            CustomError.createError({
+                name: 'Error de usuario',
+                cause: generateOwnerError(user),
+                message: 'El producto ingresado no puede ser ingresado',
+                code: EErrors.INVALID_TYPES_ERROR
+            })
+        } else {    
             addToCart = await addProductToCartService(cid, pid, quantity)
             res.send({ status: 'success', payload: addToCart})
         }

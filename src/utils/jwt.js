@@ -24,3 +24,18 @@ export const authToken = (req, res, next) => {
         next()
     })
 }
+
+export const recoverToken = user => {
+    const token = jwt.sign({user}, JWT_PRIVATE_KEY, { expiresIn: '1h'});
+    return token;
+}
+
+export const authRecoverToken = (req, res, next) => {
+    let token = req.params.token
+    if(!token) return res.status(401).send({error: 'No token received'})
+    jwt.verify(token, JWT_PRIVATE_KEY, (error, credentials) => {
+        if(error) return res.render('recover-password', { error: 'Token expirado' })
+        req.user = credentials.user;
+        next()
+    })
+}

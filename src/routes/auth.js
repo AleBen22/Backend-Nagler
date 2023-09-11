@@ -10,9 +10,14 @@ import {
     failCreateLoginController,
     getLogoutController,
     getRestoreController,
-    newRestoreController
+    newRestoreController,
+    getRecoverController,
+    newRecoverController,
+    modUserRoleController
 } from "../controllers/auth.js";
 import passport from "passport";
+import { authMiddleware } from "../middlewares/auth.js";
+import { authRecoverToken } from "../utils/jwt.js";
 const authRouter = Router();
 
 authRouter.get('/github', passport.authenticate('github', { scope: ['user:email']}), githubLoginController)
@@ -28,7 +33,12 @@ authRouter.get('/faillogin', failCreateLoginController)
 
 authRouter.get('/logout', getLogoutController)
 
-authRouter.get('/restore', getRestoreController)
+authRouter.get('/restore/:token/:user', authRecoverToken, getRestoreController)
 authRouter.post('/restore', newRestoreController)
+
+authRouter.get('/recover', getRecoverController)
+authRouter.post('/recover', newRecoverController)
+
+authRouter.get('/premium/:uid', authMiddleware, modUserRoleController)
 
 export default authRouter;

@@ -16,10 +16,10 @@ async getAllProducts(page, limit){
     return productos;
 }
 
-async getProductById(ids) {
+async getProductById(id) {
     let product;
     try {
-        product = await this.model.findOne({ _id: ids })
+        product = await this.model.findOne({ _id: id })
     } catch (error) {
         return null
         //throw error
@@ -27,7 +27,7 @@ async getProductById(ids) {
     return product;
 }
 
-async addProduct(title, description, code, price, stock, category, status) {
+async addProduct(title, description, code, price, stock, category, status, owner) {
     let product    
     try {
         product = await productModel.create({
@@ -37,7 +37,8 @@ async addProduct(title, description, code, price, stock, category, status) {
             price,
             stock,
             category,
-            status
+            status,
+            owner
         });
     } catch (error) {
         throw error

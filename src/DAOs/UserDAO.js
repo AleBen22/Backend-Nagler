@@ -66,3 +66,14 @@ export const updateUserPassword = async (email, newPassword) => {
     }
     return result
 }
+
+export const updateUserRole = async (uid, newRole) => {
+    let result;
+    try {
+        result = await userModel.updateOne({_id: uid}, {$set: {role: newRole}})
+    } catch (error) {
+        throw error
+        console.log(error)
+    }
+    return result
+}

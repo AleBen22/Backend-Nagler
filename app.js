@@ -20,7 +20,6 @@ import { addLogger } from './src/utils/logger.js'
 import { cpus } from 'os'
 
 
-
 console.log(cpus().length)
 
 const app = express();

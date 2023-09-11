@@ -40,6 +40,7 @@ export const addProductController = async (req, res) => {
     try {
         let { title, description, code, price, stock, category, status } = req.body;
         let producto = req.body;
+        let role = req.session.role
         if(!validateProduct(producto)) {
             CustomError.createError({
                 name: 'Error al registrar producto',
@@ -48,8 +49,14 @@ export const addProductController = async (req, res) => {
                 code: EErrors.INVALID_TYPES_ERROR
             })
         }
+        if(role === 'premium'){
+            let owner = req.session.user
+            let result = await addproductService(title, description, code, price, stock, category, status, owner)
+            res.send({ status: "success", payload: result })
+        } else {
         let result = await addproductService(title, description, code, price, stock, category, status)
         res.send({ status: "success", payload: result })
+        }
     } catch (error) {
         res.status(400).send({ status: "error", error });
     }
@@ -60,6 +67,9 @@ export const updateProductController = async (req, res) => {
         let id = req.params.pid;
         let { title, description, code, price, stock, category, status } = req.body;
         let fields = req.body;
+        let role = req.session.role
+        let user = req.session.user
+        let product = await getProductByIdService(id)
         if(!validateProduct(fields)) {
             CustomError.createError({
                 name: 'Error al actualizar producto',
@@ -68,8 +78,12 @@ export const updateProductController = async (req, res) => {
                 code: EErrors.INVALID_TYPES_ERROR
             })
         }
-        let updateProd = await updateProductService(title, description, code, price, stock, category, status)
-        res.send({ status: 'success', payload: updateProd})
+        if(product.owner === user || role === 'admin'){
+            let updateProd = await updateProductService(id, title, description, code, price, stock, category, status)
+            res.send({ status: 'success', payload: updateProd})
+        } else {
+            res.status(400).send({status: "No posee autorizacion"})
+        }
     } catch (error) {
         res.status(400).send({ status: 'error', error})
     }
@@ -78,9 +92,15 @@ export const updateProductController = async (req, res) => {
 export const deleteProductController = async (req, res) => {
     try {
         let id = req.params.pid;
-        let deleteProd
-        deleteProd = await deleteProductService(id)
-        res.send({ status: 'success', msg: `El id ${id} fue eliminado`})
+        let role = req.session.role
+        let user = req.session.user
+        let product = await getProductByIdService(id)
+        if(product.owner === user || role === 'admin'){
+            let deleteProd = await deleteProductService(id)
+            res.send({ status: 'success', msg: `El id ${id} fue eliminado`})    
+        } else {
+            res.status(400).send({status: "No posee autorizacion"})
+        }
     } catch (error) {
         res.status(400).send({ status: 'error', msg: `El id ${id} no corresponde a un producto`})
     }

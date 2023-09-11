@@ -1,7 +1,8 @@
 const EErrors = {
     INVALID_TYPES_ERROR: 1,
     INVALID_PARAM_ERROR: 2,
-    DATABASE_ERROR: 3
+    DATABASE_ERROR: 3,
+    INVALID_PRODUCT_OWNER_ERROR: 4
 }
 
 export default EErrors

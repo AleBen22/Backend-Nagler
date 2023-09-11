@@ -22,12 +22,12 @@ export const getProductByIdService = async (id) => {
     return product
 }
 
-export const addproductService = async (title, description, code, price, stock, category, status) => {
-    let result = await manager.addProduct(title, description, code, price, stock, category, status)
+export const addproductService = async (title, description, code, price, stock, category, status, owner) => {
+    let result = await manager.addProduct(title, description, code, price, stock, category, status, owner)
     return result
 }
 
-export const updateProductService = async (title, description, code, price, stock, category, status) => {
+export const updateProductService = async (id, title, description, code, price, stock, category, status) => {
     let updateProd = await manager.updateProduct(id, { title, description, code, price, stock, category, status })
     return updateProd
 }

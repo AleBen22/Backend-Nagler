@@ -22,4 +22,8 @@ export const generateQuantityErrorInfo = pid => {
 
 export const generateConexionError = error => {
     return `Error al correr servicio, se recibió: ${error}`
-}    
+}
+
+export const generateOwnerError = error => {
+    return `No puede ingresar un producto propio al carrito, se recibió: ${error}`
+}  

@@ -1,8 +1,10 @@
 import ContactDTO from "../DAOs/DTOs/contact.dto.js";
 import {
     getByEmailService,
+    getByIdService,
     createUserService,
-    updateUserPasswordService
+    updateUserPasswordService,
+    updateUserRoleService
 } from '../services/auth.js';
 import {
     getAllProductsService,
@@ -10,8 +12,9 @@ import {
 import {
     createCartService
 }   from '../services/cart.js'
-import { generateToken, authToken } from "../utils/jwt.js";
+import { generateToken, authToken, recoverToken } from "../utils/jwt.js";
 import { createHash, isValidPassword } from "../utils/index.js";
+import { sendMail, createOptions } from "../services/mailing.js";
 
 export const githubLoginController = async (req, res) => {}
 
@@ -86,17 +89,63 @@ export const getLogoutController =(req, res) => {
 }
 
 export const getRestoreController = (req, res) => {
-    res.render('restore-password', {})
+    let user = req.params.user
+    res.render('restore-password', { user })
 }
 
 export const newRestoreController = async (req, res) => {
+    let { email , password } = req.body;
+    let userFound = await getByEmailService(email);
+    if(!userFound) {
+        res.render('register', {})
+    }else{
+        let newPassword = createHash(password);
+        if(isValidPassword(userFound, password)){
+            res.render('restore-password', { user: email, error: 'La contraseña no puede ser la misma' })
+        }else{
+            await updateUserPasswordService(email, newPassword)
+            res.render('login', {})    
+        }
+    }
+}
+
+export const getRecoverController = (req, res) => {
+    res.render('recover-password', {})
+}
+
+export const newRecoverController = async (req, res) => {
     let user = req.body;
     let userFound = await getByEmailService(user.email);
     if(!userFound) {
         res.render('register', {})
     }else{
-        let newPassword = createHash(user.password);
-        await updateUserPasswordService(user.email, newPassword)
+        const access_token = recoverToken(user)
+        const data = {
+            to: userFound.email,
+            link: `${process.env.RESTORE_PASS_HTML}/${access_token}/${userFound.email}`,
+        }
+        let options = createOptions(data)
+
+        let mailResult = await sendMail(options)
+        res.send({status: 'success', payload: mailResult})
     }
-    res.render('login', {})
+}
+
+export const modUserRoleController = async (req, res) => {
+    try {
+        let uid = req.params.uid;
+        let user = await getByIdService(uid);
+        if(!user) {
+            res.render('register', {})
+        }else{
+            if(user.role === "premium"){
+                await updateUserRoleService(uid, 'user')
+            } else if(user.role === "user"){
+                await updateUserRoleService(uid, 'premium')
+            }
+            res.redirect('/')
+        }
+    } catch (error) {
+        res.status(400).send({status: "error", error})
+    }
 }
