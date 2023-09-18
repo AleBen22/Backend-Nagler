@@ -2,6 +2,9 @@ import express from 'express';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import mongoose from 'mongoose';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
+import { swaggerOpptions } from './swagger-options.js';
 import viewsRouter from './src/routes/views.js';
 import authRouter from './src/routes/auth.js';
 import productRouter from './src/routes/product.js'
@@ -55,6 +58,9 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+const specs = swaggerJSDoc(swaggerOpptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
 app.use('/api/session', authRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
@@ -70,7 +76,6 @@ app.get('/loggerTest', (req, res) => {
     req.logger.debug('log debug')
     res.send("ok")
 })
-
 
 const PORT = config.PORT;
 const httpServer = app.listen(PORT, () => console.log(`Server is running on port: ${httpServer.address().port}`))

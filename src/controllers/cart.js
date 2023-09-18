@@ -115,7 +115,7 @@ export const deleteProductFromCartController = async (req, res) => {
     let pid = req.params.pid;
     let deleteFromCart
     try {
-        result = await getProductByIdService(pid)
+        let result = await getProductByIdService(pid)
         if(!result){
             CustomError.createError({
                 name: 'Error de ID',
