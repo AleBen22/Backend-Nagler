@@ -1,14 +1,14 @@
 import ContactDTO from "../DAOs/DTOs/contact.dto.js";
 import {
     getAllProductsService
-} from "../services/product.js";
+} from "../services/views.js";
 import {
     getByEmailService
 } from "../services/auth.js"
 
 export const getAllProductsController = async (req, res) => {
-    let page = req.params.page || 1;
-    let limit = req.params.limit || 10;
+    let page = req.query.page || 1;
+    let limit = req.query.limit || 10;
     let user
     let data
     //let sort = req.params.sort;

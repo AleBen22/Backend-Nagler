@@ -11,8 +11,8 @@ export const getAllProductsService = async (page, limit) => {
         prevPage: products.prevPage,
         hasNextPage: products.hasNextPage,
         nextPage: products.nextPage,
-        prevLink: products.hasPrevPage?`http://localhost:8080/realtimeproducts/limit/${limit}/page/${products.prevPage}`:'',
-        nextLink: products.hasNextPage?`http://localhost:8080/realtimeproducts/limit/${limit}/page/${products.nextPage}`:'',
+        prevLink: products.hasPrevPage?`http://localhost:8080/api/products/?limit=${limit}&page=${products.prevPage}`:'',
+        nextLink: products.hasNextPage?`http://localhost:8080/api/products/?limit=${limit}&page=${products.nextPage}`:'',
     }
     return data
 }
