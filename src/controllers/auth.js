@@ -28,22 +28,23 @@ export const getUserController =  (req, res) => {
 }
 
 export const newUserController = async (req, res) => {
-    let { first_name, last_name, email, password, age } = req.body;
-    if(!first_name || !last_name || !email || !password || !age) return res.send({status: 'error', error: 'Imcomplete infomation for user creation'})
-    let userFound = await getByEmailService(email);
+    let user = req.body;
+    if(!user.first_name || !user.last_name || !user.email || !user.password || !user.age) return res.send({status: 'error', error: 'Imcomplete infomation for user creation'})
+    let userFound = await getByEmailService(user.email);
     let cart = await createCartService()
     if(userFound) return res.status(400).send({status: 'error', error: 'User already exists'})
-    password = createHash(password);
+    user.password = createHash(user.password);
     const newUser = {
-        first_name,
-        last_name,
-        email,
-        cart,
-        password,
-        age
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        cart: cart,
+        password: user.password,
+        age: user.age
     }
-    createUserService(newUser)
-    res.render('login', {msg: 'User registered successfully'})
+    let result = createUserService(newUser)
+    //res.render('login', {msg: 'User registered successfully'})
+    res.send({status: 'success', payload: result})
 }
 
 export const failCreateUserController =  async(req, res) => {
@@ -75,7 +76,8 @@ export const newLoginController = async (req, res) => {
         const rol = user.role
         const admin = req.session.admin
         let contact = new ContactDTO({user, rol, admin})
-    res.cookie('authToken', access_token).render('index', {data, contact, style:'index.css'})
+    //res.cookie('authToken', access_token).render('index', {data, contact, style:'index.css'})
+    res.cookie('authToken', access_token).send({status: 'success', payload: contact})
 }
 
 export const failCreateLoginController = (req, res) => {

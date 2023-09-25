@@ -11,10 +11,10 @@ export const getAllProductsController = async (req, res) => {
     let limit = req.query.limit || 10;
     let user
     let data
-    //let sort = req.params.sort;
+    let sort = req.query.sort;
     //let filter = req.query.filter;
     try {
-        data = await getAllProductsService(page, limit)
+        data = await getAllProductsService(page, limit, sort)
     } catch (error) {
         res.status(400).send({status: "error", error})
     }

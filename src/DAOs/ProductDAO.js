@@ -6,10 +6,10 @@ class ProdManager {
         this.model = productModel;
     }
 
-async getAllProducts(page, limit){
+async getAllProducts(page, limit, sort){
     let productos;
     try {
-        productos = await this.model.paginate({}, { page, limit: limit, lean:true })
+        productos = await this.model.paginate({}, { page, limit: limit, sort: { price: sort }, lean:true })
     } catch (error) {
         throw error
     }

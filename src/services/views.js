@@ -2,8 +2,8 @@ import ProdManager from '../DAOs/ProductDAO.js';
 
 const manager = new ProdManager();
 
-export const getAllProductsService = async (page, limit) => {
-    let products = await manager.getAllProducts(page, limit)
+export const getAllProductsService = async (page, limit, sort) => {
+    let products = await manager.getAllProducts(page, limit, sort)
     let data = {
         payload: products.docs,
         totalPages: products.totalPages,
