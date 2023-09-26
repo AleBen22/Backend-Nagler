@@ -11,7 +11,8 @@ export const getByIdService = async (uid) => {
 }
 
 export const createUserService = async (newUser) => {
-    await createUser(newUser)
+    let user = await createUser(newUser)
+    return user
 }
 
 export const getCartIdByUserService = async (cid) => {

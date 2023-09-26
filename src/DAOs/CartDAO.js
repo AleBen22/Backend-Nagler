@@ -66,7 +66,7 @@ class CartsManager {
     async deleteCart(cid) {
         let result;
         try {
-            result = await cartModel.findOneAndUpdate({ _id: cid }, { $pull: { products:  { quantity: {$gte: 0} }} } )
+            result = await cartModel.deleteOne({ _id: cid })
         } catch (error) {
             throw error
         }

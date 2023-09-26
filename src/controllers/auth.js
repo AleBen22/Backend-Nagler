@@ -29,7 +29,7 @@ export const getUserController =  (req, res) => {
 
 export const newUserController = async (req, res) => {
     let user = req.body;
-    if(!user.first_name || !user.last_name || !user.email || !user.password || !user.age) return res.send({status: 'error', error: 'Imcomplete infomation for user creation'})
+    if(!user.first_name || !user.last_name || !user.email || !user.password || !user.age) return res.status(400).send({status: 'error', error: 'Imcomplete infomation for user creation'})
     let userFound = await getByEmailService(user.email);
     let cart = await createCartService()
     if(userFound) return res.status(400).send({status: 'error', error: 'User already exists'})
@@ -40,24 +40,26 @@ export const newUserController = async (req, res) => {
         email: user.email,
         cart: cart,
         password: user.password,
-        age: user.age
+        age: user.age,
+        role: user.role
     }
-    let result = createUserService(newUser)
+    let result = await createUserService(newUser)
     //res.render('login', {msg: 'User registered successfully'})
     res.send({status: 'success', payload: result})
 }
 
 export const failCreateUserController =  async(req, res) => {
     res.render('register-error', {})
-}
+    }
 
-export const getLoginController = (req, res) => {
-    res.render('login', {style:'index.css'})
+export const getLoginController = async (req, res) => {
+//    res.render('login', {style:'index.css'})
+    res.send({status: 'success', payload: userFound})
 }
 
 export const newLoginController = async (req, res) => {
     const { email, password } = req.body;
-    if(!email || !password) return res.send({status: 'error', error: 'Imcomplete infomation for user login'})
+    if(!email || !password) return res.status(400).send({status: 'error', error: 'Imcomplete infomation for user login'})
     const user = await getByEmailService(email);
     if(!user) return res.status(400).send({status: 'error', error: 'User not found'});
     if(!isValidPassword(user, password)) return res.status(400).send({status: 'error', error: 'Invalid credentials'})

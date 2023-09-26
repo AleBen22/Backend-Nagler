@@ -9,16 +9,30 @@ describe('Desafio Testing', () => {
     let cookie
 
     describe('Test de Session, Registro, login de User', () => {
+
+        it('Endpoint POST /api/session, no debe registrar un usuario con datos vacios', async() => {
+            const mockUser = {}
+            const  { status, ok, _body } = await requester.post('/api/session/register').send(mockUser)
+            expect(ok).to.be.eq(false)
+        })
+
         const mockUser = {
             first_name: faker.person.firstName(),
             last_name: faker.person.lastName(),
             email: faker.internet.email(),
             password: '1234',
-            age: 35
+            age: 35,
+            role: 'admin'
         }
+
         it('Endpoint POST /api/session, debe registrar un usuario', async() => {
             const { _body } = await requester.post('/api/session/register').send(mockUser)
-            expect(_body.payload).to.be.ok
+            expect(_body.payload).to.have.property('_id')
+        })
+
+        it('Endpoint POST /api/session, no debe registrar un usuario existente', async() => {
+            const { status, ok, _body } = await requester.post('/api/session/register').send(mockUser)
+            expect(ok).to.be.eq(false)
         })
 
         it('Endpoint POST /api/session, debe hace login y devolver una COOKIE', async() => {
@@ -38,15 +52,26 @@ describe('Desafio Testing', () => {
 
     })
 
-    describe('Test de Productos', () => {
-        
+    describe('Test de Products', () => {
+        let productId 
+        it('Endpoint GET /api/products, devuelve todos los productos', async() => {
+            const { status, ok, _body } = await requester.get('/api/products')
+            productId = _body.data.payload[0]._id
+            expect(ok).to.be.ok
+        })
+
+        it('Endpoint GET /api/products/:pid, devuelve el producto segun su id', async() => {
+            const { status, ok, _body } = await requester.get(`/api/products/${productId}`)
+            expect(_body.product).to.have.property('_id')
+        })
+
         it('Endpoint POST /api/products, no debe registrar un producto con datos vacios', async() => {
             const productMock = {}
             const { status, ok, _body } = await requester.post('/api/products').send(productMock)
             expect(ok).to.be.eq(false)
         })
 
-        it('Endpoint POST /api/products, debe encontrarse logueado', async() => {
+        it('Endpoint POST /api/products, no debe registrar productos por no encontrarse logueado', async() => {
             const productMock = {
                 title: 'Producto Prueba',
                 description: 'Este es un producto de prueba',
@@ -73,10 +98,38 @@ describe('Desafio Testing', () => {
                 owner: 'admin'
             }
             const { status, ok, _body } = await requester.post('/api/products').set('Cookie', [`${cookie.name}=${cookie.value}`]).send(productMock)
-        
             console.log(_body)
             expect(_body.payload).to.have.property('_id')
         })
 
     })
+
+    describe('Test de Carts', () => {
+        
+        let cartId
+
+        it('Endpoint POST /api/carts, debe registrar un cart con datos vacios', async() => {
+            const cartMock = {}
+            const { status, ok, _body } = await requester.post('/api/carts').send(cartMock)
+            cartId = _body.payload._id
+            expect(_body.payload).to.have.property('_id')
+        })
+
+        it('Endpoint GET /api/carts/:cid, debe traer el cart segun su cid', async() => {
+            const { status, ok, _body } = await requester.get(`/api/carts/${cartId}`)
+            expect(_body.payload).to.have.property('_id')
+        })
+
+        it('Endpoint DELETE /api/carts/:cid, debe eliminar el cart segun su cid', async() => {
+            const { status, ok, _body } = await requester.delete(`/api/carts/${cartId}`)
+            expect(ok).to.be.ok
+        })
+
+        it('Endpoint GET /api/carts/:cid, no debe traer el cart por ser inexistente', async() => {
+            const { status, ok, _body } = await requester.get(`/api/carts/${cartId}`)
+            expect(ok).to.be.eq(false)
+        })
+
+    })
+
 })

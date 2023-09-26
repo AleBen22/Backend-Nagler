@@ -28,8 +28,8 @@ export const adminMiddleware = (req, res, next) => {
         } else {
             res.status(400).send({status: "No posee autorizacion"})
         }
-        }else{
-            res.status(400).send({status: "No se encuentra logueado"})
+    }else{
+        res.status(400).send({status: "No se encuentra logueado"})
     }
 }
 
