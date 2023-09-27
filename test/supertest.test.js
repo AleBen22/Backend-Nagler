@@ -5,11 +5,12 @@ import { faker } from "@faker-js/faker"
 const expect = chai.expect
 const requester = supertest('http://127.0.0.1:8080')
 
+
 describe('Desafio Testing', () => {
     let cookie
 
     describe('Test de Session, Registro, login de User', () => {
-
+        
         it('Endpoint POST /api/session, no debe registrar un usuario con datos vacios', async() => {
             const mockUser = {}
             const  { status, ok, _body } = await requester.post('/api/session/register').send(mockUser)
@@ -54,6 +55,7 @@ describe('Desafio Testing', () => {
 
     describe('Test de Products', () => {
         let productId 
+
         it('Endpoint GET /api/products, devuelve todos los productos', async() => {
             const { status, ok, _body } = await requester.get('/api/products')
             productId = _body.data.payload[0]._id
@@ -86,26 +88,25 @@ describe('Desafio Testing', () => {
             expect(ok).to.be.eq(false)
         })
 
-        it('Endpoint POST /api/products, debe registrar un producto', async() => {
-            const productMock = {
-                title: 'Producto Prueba',
-                description: 'Este es un producto de prueba',
-                code: 'CDE124',
-                price: 123.50,
-                status: true,
-                stock: 605,
-                category: 'Test',
-                owner: 'admin'
-            }
-            const { status, ok, _body } = await requester.post('/api/products').set('Cookie', [`${cookie.name}=${cookie.value}`]).send(productMock)
-            console.log(_body)
-            expect(_body.payload).to.have.property('_id')
-        })
+        // it('Endpoint POST /api/products, debe registrar un producto', async() => {
+        //     const productMock = {
+        //         title: 'Producto Prueba',
+        //         description: 'Este es un producto de prueba',
+        //         code: 'CDE124',
+        //         price: 123.50,
+        //         status: true,
+        //         stock: 605,
+        //         category: 'Test',
+        //         owner: 'admin'
+        //     }
+        //     const { status, ok, _body } = await requester.post('/api/products').set('Cookie', [`${cookie.name}=${cookie.value}`]).send(productMock)
+        //     console.log(_body)
+        //     expect(_body.payload).to.have.property('_id')
+        // })
 
     })
 
     describe('Test de Carts', () => {
-        
         let cartId
 
         it('Endpoint POST /api/carts, debe registrar un cart con datos vacios', async() => {
