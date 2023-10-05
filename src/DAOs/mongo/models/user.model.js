@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from "../../config/config.js";
+import config from "../../../config/config.js";
 
 const userCollection = config.USER_COLLECTION;
 
@@ -20,7 +20,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['admin', 'user', 'premium'],
         default: 'user'
-    }
+    },
+    documents: [
+        {
+            name: String,
+            reference: String
+        }
+    ],
+    last_connection: Date, //o ver timestamp
 });
 
 export const userModel = mongoose.model(userCollection, userSchema)

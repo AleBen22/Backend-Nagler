@@ -1,4 +1,4 @@
-import TicketsManager from "../DAOs/TicketDAO.js";
+import TicketsManager from "../DAOs/mongo/ticket.dao.mongo.js";
 
 const manager = new TicketsManager();
 

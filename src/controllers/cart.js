@@ -12,13 +12,18 @@ import {
 } from "../services/product.js"
 import {
     getCartIdByUserService
-} from "../services/auth.js"
+} from "../services/users.js"
 import {
     createTicketService
 } from "../services/ticket.js"
 import CustomError from "../services/errors/CustomError.js";
 import EErrors from "../services/errors/enums.js";
-import { generateQuantityErrorInfo, generatePIDErrorInfo, generateCIDErrorInfo, generateOwnerError } from "../services/errors/info.js";
+import { 
+    generateQuantityErrorInfo,
+    generatePIDErrorInfo,
+    generateCIDErrorInfo,
+    generateOwnerError
+} from "../services/errors/info.js";
 import { validateNumber } from '../utils/index.js';
 
 export const getAllCartsController = async (req, res) => {

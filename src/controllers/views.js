@@ -4,7 +4,7 @@ import {
 } from "../services/views.js";
 import {
     getByEmailService
-} from "../services/auth.js"
+} from "../services/users.js"
 
 export const getAllProductsController = async (req, res) => {
     let page = req.query.page || 1;

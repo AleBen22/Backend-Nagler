@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2';
-const productCollection = 'products';
+import config from "../../../config/config.js";
+
+const productCollection = config.PRODUCT_COLLECTION;
 
 const ProductSchema = new mongoose.Schema({
     title: { type: String, required: true },

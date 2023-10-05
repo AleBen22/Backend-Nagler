@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import config from "../../../config/config.js";
 
-const cartCollection = 'carts';
+const cartCollection = config.CART_COLLECTION;
 
 const cartSchema = new mongoose.Schema({
     products: {

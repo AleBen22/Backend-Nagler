@@ -1,4 +1,4 @@
-import ProdManager from '../DAOs/ProductDAO.js';
+import ProdManager from '../DAOs/mongo/product.dao.mongo.js';
 
 const manager = new ProdManager();
 

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import config from "../../../config/config.js";
 
-const ticketCollection = 'tickets';
+const ticketCollection = config.TICKET_COLLECTION;
 
 const ticketSchema = new mongoose.Schema({
     purchaser: String,

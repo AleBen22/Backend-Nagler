@@ -77,3 +77,23 @@ export const updateUserRole = async (uid, newRole) => {
     }
     return result
 }
+
+export const updateUserConnection = async (uid) => {
+    let result;
+    try {
+        result = await userModel.updateOne({_id: uid}, {$set: {last_connection: Date.now()}})
+    } catch (error) {
+        throw error
+    }
+    return result
+}
+
+export const updateUserDocs = async (uid, newDoc) => {
+    let result;
+    try {
+        result = await userModel.updateOne({_id: uid}, {$set: {documents: newDoc}})
+    } catch (error) {
+        throw error
+    }
+    return result
+}

@@ -4,8 +4,10 @@ import {
     getByIdService,
     createUserService,
     updateUserPasswordService,
-    updateUserRoleService
-} from '../services/auth.js';
+    updateUserRoleService,
+    updateUserConnectionService,
+    updateUserDocsService
+} from '../services/users.js';
 import {
     getAllProductsService,
 } from '../services/product.js';
@@ -78,6 +80,7 @@ export const newLoginController = async (req, res) => {
         const rol = user.role
         const admin = req.session.admin
         let contact = new ContactDTO({user, rol, admin})
+        updateUserConnectionService(req.session.user)
     //res.cookie('authToken', access_token).render('index', {data, contact, style:'index.css'})
     res.cookie('authToken', access_token).send({status: 'success', payload: contact})
 }
@@ -87,6 +90,7 @@ export const failCreateLoginController = (req, res) => {
 }
 
 export const getLogoutController =(req, res) => {
+    updateUserConnectionService(req.session.user)
     req.session.destroy(error => {
         res.render('login', {})
     })
@@ -139,16 +143,57 @@ export const modUserRoleController = async (req, res) => {
     try {
         let uid = req.params.uid;
         let user = await getByIdService(uid);
+        let result
         if(!user) {
             res.render('register', {})
         }else{
             if(user.role === "premium"){
-                await updateUserRoleService(uid, 'user')
+                result = await updateUserRoleService(uid, 'user')
+                res.send({status: 'success', payload: result})
             } else if(user.role === "user"){
-                await updateUserRoleService(uid, 'premium')
+                if(user.documents.length !== 3){
+                    res.status(400).send({status: "error", error: "No terminaste de cargar documentos, finaliza la carga para poder continuar"})                    
+                } else {
+                    result = await updateUserRoleService(uid, 'premium')
+                    res.send({status: 'success', payload: result})
+                }
             }
-            res.redirect('/')
+//            res.redirect('/')
         }
+    } catch (error) {
+        res.status(400).send({status: "error", error})
+    }
+}
+
+export const docsController = async (req, res) => {
+    try {
+        if(!req.files){res.status(400).send({status: "error", error: "No se pudo guardar el documento"})}
+        let docs = Object.keys(req.files)
+        const uid = req.params.uid;
+        const newFile = []
+        let doc
+        for (let i = 0; i < docs.length; i++) {
+            const info = Object.assign({},Object.assign({},req.files)[docs[i]])
+            if (docs[i] === 'id' || docs[i] === 'statement' || docs[i] === 'address') {
+                doc = {
+                    name: info[0].fieldname,
+                    reference: `/uploads/documents/${info[0].filename}`
+                }
+            } else  if (docs[i] === 'products') {
+                doc = {
+                    name: info[0].fieldname,
+                    reference: `/uploads/products/${info[0].filename}`
+                }
+            } else  if (docs[i] === 'profiles') {
+                doc = {
+                    name: info[0].fieldname,
+                    reference: `/uploads/profiles/${info[0].filename}`
+                }
+            }
+                newFile.push(doc)
+        }
+        let result = await updateUserDocsService(uid, newFile)
+        res.send({status: 'success', msg: `Se subieron los siguientes documentos: ${docs}`, payload: result})
     } catch (error) {
         res.status(400).send({status: "error", error})
     }

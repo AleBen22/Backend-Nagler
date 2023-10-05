@@ -1,9 +1,13 @@
 import dotenv from 'dotenv';
-dotenv.config();
 
+dotenv.config();
 export default {
+    PERSISTENCE: process.env.PERSISTENCE,
     PORT: process.env.PORT,
     USER_COLLECTION: process.env.USER_COLLECTION,
+    CART_COLLECTION: process.env.CART_COLLECTION,
+    PRODUCT_COLLECTION: process.env.PRODUCT_COLLECTION,
+    TICKET_COLLECTION: process.env.TICKET_COLLECTION,
     MONGO_CONNECTION_STRING: process.env.MONGO_CONNECTION_STRING,
     JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY,
     PASSPORT_CLIENT_ID: process.env.PASSPORT_CLIENT_ID,

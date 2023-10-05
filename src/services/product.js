@@ -1,6 +1,7 @@
-import ProdManager from '../DAOs/ProductDAO.js';
+//import ProdManager from '../DAOs/mongo/product.dao.mongo.js';
+import { ProductManager } from "../DAOs/factory.js";
 
-const manager = new ProdManager();
+const manager = new ProductManager();
 
 export const getAllProductsService = async (page, limit, sort) => {
     let products = await manager.getAllProducts(page, limit, sort)
@@ -14,6 +15,7 @@ export const getAllProductsService = async (page, limit, sort) => {
         prevLink: products.hasPrevPage?`http://localhost:8080/api/products/?limit=${limit}&page=${products.prevPage}`:'',
         nextLink: products.hasNextPage?`http://localhost:8080/api/products/?limit=${limit}&page=${products.nextPage}`:'',
     }
+    console.log(data)
     return data
 }
 

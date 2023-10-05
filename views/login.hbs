@@ -1,13 +1,13 @@
 <div>
     <h1>Login</h1>
-    <form action="/api/session/login" method="post" role="form">
+    <form action="/api/users/login" method="post" role="form">
         <input id="email" name="email" placeholder="usuario" type="text" required>
         <input id="password" name="password" placeholder="contraseña" type="password" required>
         <input type="submit" value="Login">
     </form>
     <p>{{msg}}</p>
-    <button onclick="location.href = '/api/session/register'" class="button">Ir a register</button>
-    <button onclick="location.href = '/api/session/recover'" class="button">Recuperar contraseña</button>
-    <button onclick="location.href = '/api/session/restore'" class="button">Restaurar contraseña</button>
-    <button onclick="location.href = '/api/session/github'" class="button">Ingresar con GitHub</button>
+    <button onclick="location.href = '/api/users/register'" class="button">Ir a register</button>
+    <button onclick="location.href = '/api/users/recover'" class="button">Recuperar contraseña</button>
+    <button onclick="location.href = '/api/users/restore'" class="button">Restaurar contraseña</button>
+    <button onclick="location.href = '/api/users/github'" class="button">Ingresar con GitHub</button>
 </div>

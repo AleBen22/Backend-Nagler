@@ -13,10 +13,14 @@ import {
     newRestoreController,
     getRecoverController,
     newRecoverController,
-    modUserRoleController
-} from "../controllers/auth.js";
+    modUserRoleController,
+    docsController
+} from "../controllers/users.js";
 import passport from "passport";
-import { authMiddleware } from "../middlewares/auth.js";
+import {
+    authMiddleware,
+    uploadMiddleware
+} from "../middlewares/auth.js";
 import { authRecoverToken } from "../utils/jwt.js";
 const authRouter = Router();
 
@@ -40,5 +44,7 @@ authRouter.get('/recover', getRecoverController)
 authRouter.post('/recover', newRecoverController)
 
 authRouter.get('/premium/:uid', authMiddleware, modUserRoleController)
+
+authRouter.post('/:uid/documents', uploadMiddleware, docsController)
 
 export default authRouter;

@@ -6,7 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 import { swaggerOpptions } from './swagger-options.js';
 import viewsRouter from './src/routes/views.js';
-import authRouter from './src/routes/auth.js';
+import authRouter from './src/routes/users.js';
 import productRouter from './src/routes/product.js'
 import cartRouter from './src/routes/cart.js';
 import fakerRouter from './src/routes/fakerproduct.js';
@@ -61,7 +61,7 @@ app.use(passport.session());
 const specs = swaggerJSDoc(swaggerOpptions)
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
-app.use('/api/session', authRouter)
+app.use('/api/users', authRouter)
 app.use('/api/products', productRouter)
 app.use('/api/carts', cartRouter)
 app.use('/', viewsRouter)
@@ -102,7 +102,6 @@ socketServer.on('connection', socket => {
     })
 
     socket.on('addproducttocart', async (data) => {
-        console.log(data)
         addProductToCartService(data.cid, data.pid, data.quantity)
         socketServer.emit('respond', 'producto agregado al carrito')
     })

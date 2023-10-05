@@ -1,4 +1,5 @@
-import CartsManager from '../DAOs/CartDAO.js';
+//import CartsManager from '../DAOs/mongo/cart.dao.mongo.js';
+import { CartsManager } from "../DAOs/factory.js";
 
 const manager = new CartsManager();
 

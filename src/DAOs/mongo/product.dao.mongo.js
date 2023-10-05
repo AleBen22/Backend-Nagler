@@ -1,7 +1,7 @@
 import { json } from "express";
 import { productModel } from "./models/product.model.js";
 
-class ProdManager {
+class ProductManager {
     constructor(){
         this.model = productModel;
     }
@@ -78,4 +78,4 @@ async deleteProduct(id) {
 
 }
 
-export default ProdManager;
+export default ProductManager;

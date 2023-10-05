@@ -1,6 +1,6 @@
 <div>
     <h1>Register</h1>
-    <form action="/api/session/register" method="post" role="form">
+    <form action="/api/users/register" method="post" role="form">
         <input id="first_name" name="first_name" placeholder="nombre" type="text" required>
         <input id="last_name" name="last_name" placeholder="apellido" type="text" required>
         <input id="password" name="password" placeholder="contraseña" type="password" required>
@@ -8,5 +8,5 @@
         <input id="age" name="age" placeholder="edad" type="number" required>
         <input type="submit" value="Register">
     </form>
-    <button onclick="location.href = '/api/session/login'">Ir a login</button>
+    <button onclick="location.href = '/api/users/login'">Ir a login</button>
 </div>

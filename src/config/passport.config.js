@@ -3,8 +3,9 @@ import jwt from "passport-jwt";
 import local from "passport-local";
 import GitHubStrategy from 'passport-github2';
 import config from "./config.js";
-import { createUser, getAll, getByEmail, updateUserPassword, getById } from '../DAOs/UserDAO.js';
+import { createUser, getAll, getByEmail, updateUserPassword, getById } from '../DAOs/mongo/user.dao.mongo.js';
 import { createCartService } from "../services/cart.js";
+import { updateUserConnectionService } from "../services/users.js";
 import { createHash, isValidPassword } from "../utils/index.js";
 
 const LocalStrategy = local.Strategy;
@@ -48,6 +49,7 @@ const initializePassport = () => {
             }else{
                 done(null, user)
             }
+            updateUserConnectionService(userEmail)
         } catch (error) {
             done(error)
         }
