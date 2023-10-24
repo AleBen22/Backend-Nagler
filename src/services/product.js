@@ -1,4 +1,3 @@
-//import ProdManager from '../DAOs/mongo/product.dao.mongo.js';
 import { ProductManager } from "../DAOs/factory.js";
 
 const manager = new ProductManager();
@@ -10,17 +9,18 @@ export const getAllProductsService = async (page, limit, sort) => {
         totalPages: products.totalPages,
         hasPrevPage: products.hasPrevPage,
         prevPage: products.prevPage,
+        page: products.page,
+        limit: products.limit,
         hasNextPage: products.hasNextPage,
         nextPage: products.nextPage,
-        prevLink: products.hasPrevPage?`http://localhost:8080/api/products/?limit=${limit}&page=${products.prevPage}`:'',
-        nextLink: products.hasNextPage?`http://localhost:8080/api/products/?limit=${limit}&page=${products.nextPage}`:'',
+        prevLink: products.hasPrevPage?`http://localhost:8080/?limit=${limit}&page=${products.prevPage}`:'',
+        nextLink: products.hasNextPage?`http://localhost:8080/?limit=${limit}&page=${products.nextPage}`:'',
     }
-    console.log(data)
     return data
 }
 
-export const getProductByIdService = async (id) => {
-    let product = await manager.getProductById(id)
+export const getProductByIdService = async (pid) => {
+    let product = await manager.getProductById(pid)
     return product
 }
 
@@ -39,7 +39,7 @@ export const updateQuantityProductService = async (pid, quantity) => {
     return updateProd
 }
 
-export const deleteProductService = async (id) => {
-    let deleteProd = await manager.deleteProduct(id)
-    return deleteProd
+export const deleteProductService = async (pid) => {
+    let result = await manager.deleteProduct(pid)
+    return result
 }

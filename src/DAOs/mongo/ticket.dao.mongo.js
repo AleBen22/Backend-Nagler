@@ -1,4 +1,3 @@
-import { get } from "mongoose";
 import { ticketModel } from "./models/ticket.model.js";
 
 class TicketsManager {
@@ -12,18 +11,36 @@ class TicketsManager {
             tickets = await ticketModel.find()
         } catch (error) {
             throw error
-            console.log(error)
         }
         return tickets
     }
 
-    async getTicketById(ids) {
+    async getTicketById(tid) {
         let ticket;
         try {
-            ticket = await ticketModel.findOne({ _id: ids })
+            ticket = await ticketModel.findOne({ _id: tid })
         } catch (error) {
             throw error
-            console.log(error)
+        }
+        return ticket;
+    }
+
+    async getTicketByPurchaser(purchaser) {
+        let tickets;
+        try {
+            tickets =  await ticketModel.find({ purchaser: purchaser })
+        } catch (error) {
+            throw error
+        }
+        return tickets;
+    }
+
+    async updateTicketPaymentStatus(tid, code) {
+        let ticket;
+        try {
+            ticket = await ticketModel.updateOne({ _id: tid }, { $set: {"code": code } } )
+        } catch (error) {
+            throw error
         }
         return ticket;
     }
@@ -34,7 +51,6 @@ class TicketsManager {
             newTicket = await ticketModel.create(ticket)
         } catch (error) {
             throw error
-            console.log(error)
         }
         return newTicket
     }

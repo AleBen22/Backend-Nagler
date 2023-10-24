@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     age: Number,
     cart: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'carts'
+        ref: config.CART_COLLECTION
     },
     role: {
         type: String,

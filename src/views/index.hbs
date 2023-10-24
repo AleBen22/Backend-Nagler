@@ -1,0 +1,108 @@
+<div class="body">
+    <header class="header">
+        <div class="bigheader">
+            <h1>Bienvenido {{user.full_name}}</h1>
+            <p id="role">{{user.role}}</p>
+            <br>
+            <p id="user">{{user.user}}</p>
+        </div>
+        <div class="smallheader"> 
+            <button onclick="location.href = '/api/users/logout'" class="logout">Logout</button>
+            {{#unless user.admin}}
+                <h2>Carrito:</h2>
+                <button onclick="location.href = '/api/carts/{{user.cart}}'" class="logout">{{cartProducts}}</button>
+            {{/unless}}
+        </div>
+        {{#if user.admin}}
+        <div class="smallheader">
+            <button onclick="location.href = '/api/products/addproduct'" class="logout">New Product</button>    
+            <button onclick="location.href = '/api/users/userslist'" class="logout">Users Config</button>
+        </div>
+        {{/if}}
+        <div class="smallheader">
+            {{#if user.premium}}
+                <button onclick="location.href = '/api/products/addproduct'" class="logout">New Product</button>    
+            {{/if}}
+            {{#unless user.admin}}
+                <button onclick="location.href = '/api/carts/tickets/{{user.user}}'" class="logout">Tickets</button>    
+            {{/unless}}
+        </div>
+    </header>
+    <section class="section">
+        <div class="listado">
+            <h2>Listado de Productos</h2>
+            <div class="mediumdiv">
+                <div class="smalldiv" style="float: left"> 
+                    {{#if data.hasPrevPage}}
+                        <li style="float: left"><a href="{{data.prevLink}}">Anterior</a></li>
+                    {{/if}}
+                </div>
+                <div class="pageinf">   
+                    <p class="pages">Pagina</p>       
+                    <p class="pages" id="page">{{data.page}}</p>
+                    <p class="pages">de</p>
+                    <p class="pages">{{data.totalPages}}</p>
+                    <label name="limit">Productos por pagina:</label>
+                    <input type="number" id="limit" value={{data.limit}}>
+                </div>
+                <div class="smalldiv"> 
+                    {{#if data.hasNextPage}}
+                        <li><a href="{{data.nextLink}}">Siguiente</a></li>
+                    {{/if}}
+                </div>
+            </div>
+            {{#if user.admin}}
+                <div class="productsList" id="productsList">
+                    {{#each data.payload}}
+                        <div class="product">
+                            <div class="bigdiv">
+                                <p>{{title}}</p>
+                                <p id="productid">{{_id}}</p>
+                                <p style="width: 100%">Descripcion: {{description}}</p>
+                                <br>
+                                <br>
+                                <p>Disponibles: {{stock}}</p>
+                                <p>Precio: ${{price}}</p>
+                            </div>
+                            <div class="smalldiv">
+                                <button id="delete" class="logout" value="{{_id}}">Eliminar</button>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                {{#each data.payload}}
+                    <div class="product">
+                        <form action="/api/carts/{{../user.cart}}/product/{{_id}}" method="post" role="form">
+                            <div class="bigdiv">
+                                <p>{{title}}</p>
+                                <br>
+                                <p>Descripcion: {{description}}</p>
+                                <br>
+                                <p>Precio: ${{price}}</p>
+                                <p>Disponibles: {{stock}}</p>
+                            </div>
+                            <div style="padding-top: 20px" class="smalldiv">
+                                <label style="margin-left: 22%" for="quantity">Cantidad:</label>
+                                <input type="number" class="userid" name="quantity" id="quantity" min="1" max={{stock}} value="1" required>
+                                <input type="submit" class="agregar" value="Agregar">
+                            </div>
+                        </form>
+                    </div>
+                {{/each}}       
+            {{/if}}
+        </div>
+        {{#unless user.admin}}
+            <aside>
+                <div>
+                    <p id="messageLogs"></p>
+                </div>
+                <div>
+                    <input type="text" id="chatBox">
+                </div>
+            </aside>
+        {{/unless}}
+    </section>
+</div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>

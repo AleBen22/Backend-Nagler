@@ -1,0 +1,14 @@
+<div class="log">
+    <h1>Login</h1>
+    <form action="/api/users/login" method="post" role="form">
+        <input id="email" name="email" placeholder="usuario" type="text" class="textbox" required>
+        <input id="password" name="password" placeholder="contraseña" type="password" class="textbox" required>
+        <input type="submit" class="ok" value="Login">
+    </form>
+</div>
+<div class="accs">    
+    <button onclick="location.href = '/api/users/register'" class="button">Registrar nuevo usuario</button>
+    <button onclick="location.href = '/api/users/recover'" class="button">Recuperar contraseña</button>
+    <button onclick="location.href = '/api/users/github'" class="button">Ingresar con GitHub</button>
+    <p style="width: 100%">{{msg}}</p>
+</div>

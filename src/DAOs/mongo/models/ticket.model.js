@@ -4,9 +4,9 @@ import config from "../../../config/config.js";
 const ticketCollection = config.TICKET_COLLECTION;
 
 const ticketSchema = new mongoose.Schema({
-    purchaser: String,
-    amount: Number,
-    code: String,
+    purchaser: {type: String},
+    amount: {type: Number},
+    code: {type: String},
     },
     {
         timestamps: { createdAt: 'purchase_datetime', updatedAt: 'updated_at' }

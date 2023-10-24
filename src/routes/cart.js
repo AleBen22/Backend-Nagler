@@ -7,17 +7,28 @@ import {
     addProductToCartController,
     deleteCartController,
     deleteProductFromCartController,
-    createTicketFromCartController
+    createTicketFromCartController,
+    getTicketsByPurchaserController,
+    getTicketById
 } from '../controllers/cart.js';
+import { authToken } from "../config/jwt.js";
+import { paymentController } from "../controllers/payments.js";
 
 const cartRouter = Router();
 
+
+cartRouter.post('/:cid/product/:pid', authToken, userMiddleware, addProductToCartController)
+cartRouter.get('/:cid', authToken, getCartByIdController)
+cartRouter.post('/:cid/purchase', authToken, createTicketFromCartController)
+cartRouter.get('/tickets/:uid', authToken, getTicketsByPurchaserController)
+cartRouter.post('/create-payment-intent', paymentController)
+cartRouter.get('/ticket/:tid', getTicketById)
+
+//Sin Vistas
 cartRouter.get('/', getAllCartsController)          
 cartRouter.post('/', createCartController)          
-cartRouter.get('/:cid', getCartByIdController)      
 cartRouter.delete('/:cid', deleteCartController)    
-cartRouter.put('/:cid/product/:pid', userMiddleware, addProductToCartController)
+cartRouter.put('/:cid/product/:pid', authToken, userMiddleware, addProductToCartController)
 cartRouter.delete('/:cid/product/:pid', userMiddleware, deleteProductFromCartController)
-cartRouter.post('/:cid/purchase', createTicketFromCartController)
 
 export default cartRouter;

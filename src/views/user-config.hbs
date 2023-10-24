@@ -1,0 +1,29 @@
+<header class="header">
+    <div class="bigheader">
+        <h1>Listado de Usuarios</h1>
+    </div>
+    <div class="smallheader">
+        <button class="logout" onclick="location.href = '/'">Volver</button>
+        <h2>{{msg}}</h2>        
+    </div>
+</header>
+<section class="section">
+<div class="usersList" id="usersList">
+    {{#each users}}
+    <div class="user">
+    <div class="bigdiv">
+        <p>Nombre y Apellido: {{full_name}}</p>
+        <p>Email: {{user}}</p>
+        <p>Role: {{role}}</p>
+        <p>Id: {{id}}</p>
+    </div>
+    <div class="smalldiv">
+        <button onclick="location.href = '/role/{{id}}'" class="logout">Cambiar Role</button>
+        <button id="delete" class="logout" value="{{id}}">Eliminar</button>
+    </div>
+    </div>
+    {{/each}}
+</div>
+</section>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/users-config.js"></script>

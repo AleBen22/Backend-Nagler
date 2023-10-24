@@ -1,0 +1,18 @@
+<header class="header">
+    <div class="bigheader">
+        <h1>Tickets del Usuario: {{purchaser}}</h1>
+    </div>
+    <div class="smallheader">
+        <button class="logout" onclick="location.href = '/'">Volver</button>
+    </div>
+</header>
+<section class="section">
+<div class="usersList" id="usersList">
+    {{#each data}}
+    <div class="user">
+        <p>Codigo Ticket: {{code}}</p>
+        <p>Monto de la compra: {{amount}}</p>
+    </div>
+    {{/each}}
+</div>
+</section>

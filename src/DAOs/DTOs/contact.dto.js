@@ -1,10 +1,11 @@
 export default class ContactDTO {
-    constructor(contact){
-        this.full_name = contact.user.first_name + " " + contact.user.last_name,
-        this.user = contact.user.email,
-        this.cart = contact.user.cart,
-        this.rol = contact.rol,
-        this.admin = contact.admin
+    constructor(user){
+        this.full_name = user.first_name + " " + user.last_name,
+        this.user = user.email,
+        this.id = user._id,
+        this.cart = user.cart,
+        this.role = user.role,
+        this.admin = user.admin
     }
 }
 

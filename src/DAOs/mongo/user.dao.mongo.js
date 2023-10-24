@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { userModel } from "./models/user.model.js";
 
 export const getAll = async () => {
@@ -7,7 +6,6 @@ export const getAll = async () => {
         result = await userModel.find()
     } catch (error) {
         throw error
-        console.log(error)
     }
     return result
 }
@@ -18,7 +16,6 @@ export const getByEmail = async email => {
         result = await userModel.findOne( {email} )
     } catch (error) {
         throw error
-        console.log(error)
     }
     return result
 }
@@ -29,7 +26,6 @@ export const getByCartId = async cid => {
         result = await userModel.findOne( {"cart": cid} )
     } catch (error) {
         throw error
-        console.log(error)
     }
     return result
 }
@@ -40,7 +36,6 @@ export const getById = async id => {
         result = await userModel.findOne( {_id: id} )
     } catch (error) {
         throw error
-        console.log(error)
     }
     return result
 }
@@ -51,10 +46,19 @@ export const createUser = async user => {
         result = await userModel.create(user)
     } catch (error) {
         throw error
-        console.log(error)
     }
     return result
 }
+
+export const deleteUser = async uid => {
+    let result;
+    try {
+        result = await userModel.deleteOne({ _id: uid})
+    } catch (error) {
+        throw error
+    }
+    return result
+} 
 
 export const updateUserPassword = async (email, newPassword) => {
     let result;
@@ -62,7 +66,6 @@ export const updateUserPassword = async (email, newPassword) => {
         result = await userModel.updateOne({email: email}, {$set: {password: newPassword}})
     } catch (error) {
         throw error
-        console.log(error)
     }
     return result
 }
@@ -73,7 +76,6 @@ export const updateUserRole = async (uid, newRole) => {
         result = await userModel.updateOne({_id: uid}, {$set: {role: newRole}})
     } catch (error) {
         throw error
-        console.log(error)
     }
     return result
 }

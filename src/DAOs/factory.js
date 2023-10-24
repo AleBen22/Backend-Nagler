@@ -1,11 +1,16 @@
-import config from "../config/config.js";
-import mongoose from "mongoose";
+import config from '../config/config.js';
+import mongoose from 'mongoose';
 
 export let CartsManager
 export let ProductManager
 
 switch (config.PERSISTENCE) {
     case 'MONGO':
+
+        mongoose.connect(config.MONGO_CONNECTION_STRING)
+            .then(() => console.log('Database connected'))
+            .catch(error => console.log(error))
+
         const { default: CartsManagerMongo } = await import('./mongo/cart.dao.mongo.js')
         CartsManager = CartsManagerMongo
 

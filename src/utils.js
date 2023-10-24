@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { fileURLToPath} from 'url'
+import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 export const validateProduct = product => {

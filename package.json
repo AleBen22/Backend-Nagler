@@ -3,7 +3,7 @@
   "name": "trabajo",
   "version": "1.0.0",
   "description": "",
-  "main": "ProductManager.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",

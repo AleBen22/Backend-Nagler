@@ -1,12 +1,18 @@
-import { authMiddleware } from "../middlewares/auth.js";
+import { authMiddleware, adminMiddleware, userMiddleware } from "../middlewares/auth.js";
 import { Router } from 'express';
 import {
-    getAllProductsController
+    getDataController,
+    modUserRoleController,
 } from '../controllers/views.js';
+import {
+    authToken
+} from "../config/jwt.js";
 
 const viewsRouter = Router();
 
-viewsRouter.get('/', authMiddleware, getAllProductsController)
-viewsRouter.get('/current', authMiddleware, getAllProductsController)
+//Obtengo datos para generar la vista index
+viewsRouter.get('/', authToken, authMiddleware, getDataController)
+//Ruta para cambio de role de usuarios
+viewsRouter.get('/role/:uid', modUserRoleController)
 
 export default viewsRouter

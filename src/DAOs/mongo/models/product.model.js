@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema({
     description: { type: String, required: true },
     code: { type: String, unique: true, required: true },
     price: { type: Number, required: true },
-    status: { type: Boolean, },
+    status: { type: Boolean, default: true },
     stock: { type: Number, required: true },
     category: { type: String, required: true },
     owner: { type: String, required: true, default: 'admin' }

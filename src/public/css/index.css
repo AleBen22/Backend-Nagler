@@ -1,0 +1,325 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Indie Flower", cursive;
+}
+
+header {
+    width: 100%;
+    margin: 0;
+    background-color: #ff751a;
+    height: 160px;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    box-shadow: 2px 3px 10px #000000;
+}
+
+h1, #user, #role {
+    margin-left: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 10px;
+}
+
+h3 {
+    margin-left: 10%;
+    margin-top: 10%;    
+}
+
+.bigheader {
+    width: 80%;
+    float: left;
+}
+
+.smallheader {
+    width: 10%;
+    height: 160px;
+    float: right;
+}
+
+.bigdiv {
+    width: 80%;
+    padding-top: 30px;
+    padding-left: 10px;
+    float: left;
+}
+
+.mediumdiv {
+    width: 60%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 20%;
+    height: 53px;
+    float: left;
+    border: 1px solid #000000;
+    border-radius: 30px;
+}
+
+.smalldiv {
+    width: 20%;
+    height: 60px;
+    float: right;
+}
+
+.userid {
+    width: 20%;
+    margin-left: 10px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 2%, #ff751a;
+    border-color: #ff751a;
+    background-color: #fff2f2;
+    text-align: center;
+    font-size: 18px;
+}
+
+
+.section {
+    width: 100%;
+    margin-top: 160px;
+}
+
+.listado {
+    width: 76%;
+    margin: 2%;
+    padding-top: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    float: left;
+    border: 1px solid #000000;
+    border-radius: 30px;
+    box-shadow: 2px 3px 10px #000000;
+}
+
+.product {
+    width: 90%;
+    height: 140px;
+    padding-left: 5%;
+    margin-left: 5%;
+    margin-bottom: 20px;
+    float: left;
+    background-color:rgb(213, 213, 213);
+    border: 1px solid #000000;
+    border-radius: 10px;
+    box-shadow: 2px 3px 10px #000000;
+}
+
+.user {
+    width: 60%;
+    height: 100px;
+    padding-left: 5%;
+    margin-left:10%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    float: left;
+    background-color:rgb(213, 213, 213);
+    border: 1px solid #000000;
+    border-radius: 10px;
+    box-shadow: 2px 3px 10px #000000;
+}
+
+.log {
+    width: 40%;
+    margin-left: 30%;
+    margin-top: 15%;
+    background-color:rgb(213, 213, 213);
+    border: 1px solid #000000;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.accs {
+    width: 40%;
+    height: 80px;
+    margin-left: 30%;
+    background-color:rgb(169, 167, 167);
+    border: 1px solid #000000;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.textbox {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 2%, #ff751a;
+    border-color: #ff751a;
+    background-color: #fff2f2;
+    text-align: center;
+    font-size: 15px;
+}
+
+.carrito {
+    width: 16%;
+    margin: 2%;
+    padding: 10px;
+    float: left;
+    border: 1px solid #000000;
+    border-radius: 30px;
+    box-shadow: 2px 3px 10px #000000;
+}
+
+.div  {
+    float: left;
+    width: 30%;
+    margin-left: 35%;
+    margin-top: 15%;
+    border: 1px solid #000000;
+    border-radius: 30px;
+    box-shadow: 2px 3px 10px #000000;
+}
+
+li {
+    width:150px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 3px;
+    font-size: 16px;
+    text-align: center;
+    background-color: #ff751a;
+    list-style: none;
+    float: right;
+    box-shadow: 12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset, -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+a {
+    color:#000000;
+    text-decoration: none;
+}
+
+.button {
+    position: relative;
+    width: 20%;
+    height: 55px;
+    border-radius: 30px;
+    border: 0 none;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10%;
+    font-size: 15px;
+    background-color: #ff751a;
+    box-shadow: 12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset, -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+.logout {
+    position: relative;
+    width: 80%;
+    height: 40px;
+    border-radius: 30px;
+    border: 0 none;
+    padding: 5px;
+    float: right;
+    margin-top: 5px;
+    margin-right: 10%;
+    font-size: 16px;
+    background-color: #ff751a;
+    box-shadow: 12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset, -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+.agregar {
+    position: relative;
+    width: 70%;
+    height: 40px;
+    padding: 5px;
+    border-radius: 30px;
+    border: 0 none;
+    margin-top: 10px;
+    margin-left: 20%;
+    font-size: 20px;
+    background-color: #ff751a;
+    box-shadow: 12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset, -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+.ok {
+    position: relative;
+    width: 40%;
+    height: 50px;
+    border-radius: 30px;
+    border: 0 none;
+    padding: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 30%;
+    font-size: 18px;
+    background-color: #ff751a;
+    box-shadow: 12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset, -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+.buttoncart {
+    position: relative;
+    float: left;
+    width: 15%;
+    height: 50px;
+    border-radius: 30px;
+    border: 0 none;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: 25px;
+    font-size: 13px;
+    background-color: #ff751a;
+    box-shadow: 12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset, -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+button:hover {
+    background-color: rgb(255, 72, 0);
+    cursor: pointer;
+}
+
+aside{
+    width:20%;
+    margin-top: 160px;
+    height: 100vh;
+    background-color: #9b9797;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+#chatBox{
+    width: 100%;
+    background-color: #fff2f2;
+    position: fixed;
+    bottom: 1vh;
+}
+
+p {
+    width: 50%;
+    float: left;
+}
+
+.pages {
+    width: 25%;
+    float: left;
+    text-align: center;
+}
+
+.quantity {
+    width: 7%;
+    margin-top: 25px;
+    margin-left: 25px;
+    float: left;
+    border-radius: 10px;
+    border: 2%, #ff751a;
+    border-color: #ff751a;
+    background-color: #fff2f2;
+    text-align: center;
+    font-size: 15px;
+}
+
+#limit {
+    width: 40px;
+}
+
+.pageinf {
+    width: 60%;
+    padding-left: 15%;
+    padding-right: 15%;
+    float: left
+}

@@ -1,4 +1,3 @@
-//import CartsManager from '../DAOs/mongo/cart.dao.mongo.js';
 import { CartsManager } from "../DAOs/factory.js";
 
 const manager = new CartsManager();
@@ -29,6 +28,9 @@ export const createCartService = async () => {
 
 export const addProductToCartService = async (cid, pid, quantity) => {
     let addToCart = await manager.addProductToCart(cid, pid, quantity)
+    if(!addToCart){
+        return null
+    }
     return addToCart
 }
 

@@ -1,4 +1,3 @@
-import { get } from "mongoose";
 import { cartModel } from "./models/cart.model.js";
 
 class CartsManager {
@@ -41,20 +40,12 @@ class CartsManager {
     }
 
     async addProductToCart(cid, pid, quantity) {
-        let cart;
         let result;
-        try {
-            cart = this.getCartById(cid)
-        } catch (error) {
-            throw error
-        }
         try {
             let prodCart = await cartModel.findOne({ _id: cid, "products.id": pid},{"products.quantity": true})
             if (!prodCart){
                 result = await cartModel.findOneAndUpdate({ _id: cid }, { $push: { products: { $each: [{id: pid, quantity: quantity }]} } })
             } else {
-            // let prodQuantity = prodCart.products
-            // let newQuantity = prodQuantity[0].quantity + 1
             result = await cartModel.updateOne({ _id: cid, "products.id": pid}, { $set: {"products.$.quantity": quantity}} )
             }
         } catch (error) {

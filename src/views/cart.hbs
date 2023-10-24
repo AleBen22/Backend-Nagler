@@ -1,0 +1,34 @@
+<header>
+    <div class="user">
+        <h1>Carrito de compras</h1>
+        <p style="width:15%">Id de carrito: </p>
+        <p style="width:85%" id="cartId">{{cart._id}}</p>
+        <p style="width:15%">User:</p>
+        <p style="width:85%">{{user.user}}</p>
+    </div>
+    <div class="smallheader">    
+        <button class="logout" onclick="location.href='/'">Volver</button>
+    </div>
+</header>
+<section class="section">
+    <div class="listado" id="listado">
+        {{#each cart.products}}
+        <form class="product" action="/api/carts/{{../cart._id}}/product/{{id._id}}" method="post" role="form">
+            <h2>{{id.title}}</h2>
+            <p>Descripción: {{id.description}}</p>
+            <input type="hidden" name="cart" value="true">
+            <input type="number" class="quantity" name="quantity" id="quantity" placeholder="{{quantity}}" required>
+            <input type="submit" class="buttoncart" value="Modificar cantidad">
+            <button id="delete" class="buttoncart" value="{{id._id}}">Quitar del carrito</button>
+        </form>
+        {{/each}}
+    </div>
+    <div class="carrito">
+        <form action="/api/carts/{{cart._id}}/purchase" method="post" role="form">
+            <input type="submit" class="logout" value="Finalizar compra">
+        </form>
+
+    </div>
+</section>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/cart.js"></script>

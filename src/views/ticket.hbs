@@ -1,0 +1,27 @@
+<header>
+    <div class="user">
+        <h1>Compra confirmada</h1>
+        <p>User: {{ticket.purchaser}}</p>
+    </div>
+    <div class="smallheader">    
+        <button class="logout" onclick="location.href='/'">Volver</button>
+    </div>
+</header>
+<section class="section">
+    <div class="div">
+        <form action='/api/carts/create-payment-intent' method="POST" role="form" class="bigdiv">
+            <p>Monto de la compra: {{ticket.amount}}</p>
+            <br>
+            <label name="id">Numero de orden:</label>
+            <input type="text" class="textbox" id="id" name="tid" value={{ticket._id}}>
+            <input type="submit" class="ok" value="Checkout">    
+        </form>
+    </div> 
+    <div class="div">
+    {{#each productsSinStock}}
+        <h1>Productos Sin Stock</h1>
+        <h2>Id: {{id}}</h2>
+        <h2>Cantidad: {{quantity}}</h2>
+    {{/each}}  
+    </div>
+</section>

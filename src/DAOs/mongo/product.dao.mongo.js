@@ -1,4 +1,3 @@
-import { json } from "express";
 import { productModel } from "./models/product.model.js";
 
 class ProductManager {
@@ -14,6 +13,16 @@ async getAllProducts(page, limit, sort){
         throw error
     }
     return productos;
+}
+
+async getProducts(){
+    let products;
+    try {
+        products = await this.model.find()
+    } catch (error) {
+        return null
+    }
+    return products;
 }
 
 async getProductById(id) {
