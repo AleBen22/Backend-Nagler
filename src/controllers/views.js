@@ -58,7 +58,7 @@ export const modUserRoleController = async (req, res) => {
                 } else if(user.role === "user"){
                     result = await updateUserRoleService(uid, 'premium')
                 }
-                res.redirect('/users')
+                res.redirect('/api/users/userslist')
             }
         }
     } catch (error) {
