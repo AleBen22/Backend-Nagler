@@ -64,7 +64,7 @@ export const addProductToCartController = async (req, res) => {
             if(!cart){
                 res.redirect('/')
             } else {
-                res.redirect(`/cart/${cid}`)
+                res.redirect(`/api/carts/${cid}`)
             }
 //            addToCart = await addProductToCartService(cid, pid, quantity)
 //            res.send({ status: 'success', payload: addToCart})

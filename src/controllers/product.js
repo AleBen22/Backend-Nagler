@@ -25,6 +25,7 @@ export const addProductController = async (req, res) => {
         let { title, description, code, price, stock, category, status } = req.body;
         let producto = req.body;
         let role = req.user.role
+        let email = req.user.email
         if(!validateProduct(producto)) {
             CustomError.createError({
                 name: 'Error al registrar producto',
@@ -34,7 +35,7 @@ export const addProductController = async (req, res) => {
             })
         }
         if(role === 'premium'){
-            let owner = role
+            let owner = email
             await addproductService(title, description, code, price, stock, category, status, owner)
             res.redirect('/')
 //            res.send({ status: "success", payload: result })
