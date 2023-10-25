@@ -1,5 +1,5 @@
 import { ProductManager } from "../DAOs/factory.js";
-
+import config from "../config/config.js";
 const manager = new ProductManager();
 
 export const getAllProductsService = async (page, limit, sort) => {
@@ -13,8 +13,8 @@ export const getAllProductsService = async (page, limit, sort) => {
         limit: products.limit,
         hasNextPage: products.hasNextPage,
         nextPage: products.nextPage,
-        prevLink: products.hasPrevPage?`http://localhost:8080/?limit=${limit}&page=${products.prevPage}`:'',
-        nextLink: products.hasNextPage?`http://localhost:8080/?limit=${limit}&page=${products.nextPage}`:'',
+        prevLink: products.hasPrevPage?`${config.URL_PATH}/?limit=${limit}&page=${products.prevPage}`:'',
+        nextLink: products.hasNextPage?`${config.URL_PATH}/?limit=${limit}&page=${products.nextPage}`:'',
     }
     return data
 }
