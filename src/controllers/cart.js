@@ -34,6 +34,7 @@ export const addProductToCartController = async (req, res) => {
     let cid = req.params.cid
     let pid = req.params.pid;
     let user = req.user;
+    console.log(req.body)
     let { quantity, cart } = req.body;
     let result
     try {
@@ -52,7 +53,7 @@ export const addProductToCartController = async (req, res) => {
                 message: 'El parametro ingresado no es valido',
                 code: EErrors.INVALID_TYPES_ERROR
             })
-        } else if(result.owner === user) {
+        } else if(result.owner === user.user) {
             CustomError.createError({
                 name: 'Error de usuario',
                 cause: generateOwnerError(user),
@@ -70,7 +71,7 @@ export const addProductToCartController = async (req, res) => {
 //            res.send({ status: 'success', payload: addToCart})
         }
     } catch (error) {
-        res.render('error', { msg: error })
+        res.render('error', { msg: "pepe" })
 //        res.status(400).send({ status: 'error', msg: error})
     }
 }
