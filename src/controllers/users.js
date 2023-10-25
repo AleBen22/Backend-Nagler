@@ -1,6 +1,7 @@
 import ContactDTO from "../DAOs/DTOs/contact.dto.js";
 import {
     getUsersService,
+    getAllUsersService,
     getByEmailService,
     getByIdService,
     createUserService,
@@ -79,7 +80,7 @@ export const newLoginController = async (req, res) => {
     if(!isValidPassword(foundUser, password)) return res.render('login', {msg:'Invalid credentials'})
     let user = new ContactDTO(foundUser)
     const access_token = generateToken(user)
-        updateUserConnectionService(user.email)
+        updateUserConnectionService(user.user)
     res.cookie('authToken', access_token, {httpOnly: true}).redirect('/')
     //res.cookie('authToken', access_token).send({status: 'success', payload: contact})
 }
@@ -141,7 +142,8 @@ export const newRecoverController = async (req, res) => {
 
 //Sin Vistas
 export const deleteUsersController = async (req, res) => {
-    let users = await getUsersService()
+    let users = await getAllUsersService()
+    console.log(users)
     let limitDate = new Date();
     limitDate.setDate(limitDate.getDate() - 2 );
     let count = 0
@@ -152,6 +154,7 @@ export const deleteUsersController = async (req, res) => {
             const data = {
                 to: users[i].email,
             }
+            console.log(data)
             let options = createOptionsUserDeleted(data)
             let mailResult = await sendMail(options)
             count += 1

@@ -34,7 +34,6 @@ export const addProductToCartController = async (req, res) => {
     let cid = req.params.cid
     let pid = req.params.pid;
     let user = req.user;
-    console.log(req.body)
     let { quantity, cart } = req.body;
     let result
     try {
@@ -71,7 +70,7 @@ export const addProductToCartController = async (req, res) => {
 //            res.send({ status: 'success', payload: addToCart})
         }
     } catch (error) {
-        res.render('error', { msg: "pepe" })
+        res.render('error', { msg: error })
 //        res.status(400).send({ status: 'error', msg: error})
     }
 }

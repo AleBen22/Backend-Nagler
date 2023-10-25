@@ -23,6 +23,11 @@ export const getUsersService = async () => {
     return contacts
 }
 
+export const getAllUsersService = async () => {
+    let usersFound = await getAll();
+    return usersFound
+}
+
 export const getByEmailService = async (email) => {
     let userFound = await getByEmail(email);
     return userFound
