@@ -26,6 +26,7 @@ export const addProductController = async (req, res) => {
         let producto = req.body;
         let role = req.user.role
         let email = req.user.email
+        console.log(email)
         if(!validateProduct(producto)) {
             CustomError.createError({
                 name: 'Error al registrar producto',
