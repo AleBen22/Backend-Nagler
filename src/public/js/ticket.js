@@ -47,7 +47,7 @@ async function handleSubmit(e) {
     elements,
     confirmParams: {
       // Make sure to change this to your payment completion page
-      return_url: `http://localhost:8080/api/carts/ticket/${id}`,
+      return_url: `https://backend-nagler-production.up.railway.app/api/carts/ticket/${id}`,
       receipt_email: emailAddress,
     },
   });

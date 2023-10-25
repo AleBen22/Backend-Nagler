@@ -107,6 +107,7 @@ export const newRestoreController = async (req, res) => {
         res.render('register', {style: 'index.css'})
     }else{
         let newPassword = createHash(password);
+        console.log(userFound)
         if(isValidPassword(userFound, password)){
             res.render('restore-password', { user: email, error: 'La contraseña no puede ser la misma', style: 'index.css' })
         }else{
